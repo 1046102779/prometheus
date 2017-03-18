@@ -19,7 +19,9 @@ Prometheus镜像使用Volumn存储实际度量指标。在生产环境上使用[
 #### 卷&绑定挂载
 在运行Prometheus服务的主机上，绑定挂载你的prometheus.yml配置文件:
 > docker run -p 9090:9090 -v /tmp/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
 或者为这个配置文件使用另外的卷
+
 > docker run -p 9090:9090 -v /prometheus-data \
        prom/prometheus -config.file=/prometheus-data/prometheus.yml
 
@@ -38,10 +40,13 @@ Prometheus镜像使用Volumn存储实际度量指标。在生产环境上使用[
 
 ### 使用配置管理系统
 如果你喜欢使用配置管理系统，你可能对下面地第三方库感兴趣：
+
 Ansible：
  - [griggheo/ansible-prometheus](https://github.com/griggheo/ansible-prometheus)
  - [William-Yeh/ansible-prometheus](https://github.com/William-Yeh/ansible-prometheus)
+
 Chef:
  - [rayrod2030/chef-prometheus](https://github.com/rayrod2030/chef-prometheus)
+
 SaltStack:
  - [bechtoldt/saltstack-prometheus-formula](https://github.com/bechtoldt/saltstack-prometheus-formula)
