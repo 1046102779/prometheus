@@ -4,6 +4,7 @@
 ### 下载和运行Prometheus
 最新稳定版[下载地址](https://prometheus.io/download), 选择合适的平台，然后提取并运行它
 > tar xvfz prometheus-*.tar.gz
+
 > cd prometheus-*
 
 在运行Prometheus服务之前，我们需要指定一个该服务运行所需要的配置文件
@@ -22,7 +23,7 @@ global:
     monitor: 'codelab-monitor'
 
 # A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
+# Here its Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'prometheus'
@@ -38,7 +39,9 @@ scrape_configs:
 ### 启动Prometheus服务
 cd到Prometheus服务目录，并指定刚刚自定义好的配置文件，并启动Prometheus服务, 如下所示：
 > # start Prometheus.
+
 > # By default, Prometheus stores its database in ./data (flag -storage.local.path).
+
 > ./prometheus -config.file={$dir}/prometheus.yml # $dir = absolutely/relative path
 
 Prometheus服务启动成功后，然后再打开浏览器在页面上数据[http://localhost:9090](http://localhost:9090/). 服务运行几秒后，会开始收集自身的时间序列数据
@@ -56,6 +59,7 @@ Prometheus服务执行的操作系统线程数量由GOMAXPROCS环境变量控制
 
 如果你可以从[http://localhost:9090/metrics](http://localhost:9090/metrics)查看到收集的度量指标数据，那么其中有一个指标数据名称为`prometheus_target_interval_length_seconds`(两次抓取数据之间的时间差)可以被提取出来，可以在表达式控制框中输入：
 > prometheus_target_interval_length_seconds
+
 它应该会返回带有`prometheus_target_interval_length_seconds`度量指标的许多时间序列数据，只是带有不能标签, 这些标签有不同的延迟百分比和目标群组之间的间隔。 
 
 如果我们仅仅对p99延迟感兴趣，我们使用下面的查询表达式收集该信息
