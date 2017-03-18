@@ -38,9 +38,10 @@ scrape_configs:
 
 ### 启动Prometheus服务
 cd到Prometheus服务目录，并指定刚刚自定义好的配置文件，并启动Prometheus服务, 如下所示：
-> # start Prometheus.
 
-> # By default, Prometheus stores its database in ./data (flag -storage.local.path).
+>  start Prometheus.
+
+>  By default, Prometheus stores its database in ./data (flag -storage.local.path).
 
 > ./prometheus -config.file={$dir}/prometheus.yml # $dir = absolutely/relative path
 
