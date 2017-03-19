@@ -17,6 +17,7 @@ Graphite和Prometheus一样，存储时间序列数值采样点。然而，Prome
 > api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample1>"} -> 34
 > api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample2>"} -> 28
 > api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample3>"} -> 31
+
 由上可以看到，三个api-server各自的度量指标数据，Prometheus把api-server也作为了一个维度，便于分析api-server服务出现的各种问题
 
 #### 存储
