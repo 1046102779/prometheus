@@ -23,7 +23,7 @@
 
    [数据模型](concepts/data_model.md)
 
-   [度量指标类型)[concepts/metric_types.md)
+   [度量指标类型](concepts/metric_types.md)
 
    [任务与实例](concepts/job_and_instance.md)
 
