@@ -30,7 +30,7 @@ Prometheus客户库提供了四个核心的metrics类型。这四种类型目前
  - [basename]_sum, 是指观察值总和
  - [basename]_count,是指已经观察到的事件总计数
 
-使用`[histogram_quantile()](https://prometheus.io/docs/querying/functions/#histogram_quantile)`函数, 计算直方图或者是直方图聚合计算的分位数阈值。 一个直方图计算[Apdex值](http://en.wikipedia.org/wiki/Apdex)也是合适的, 当在buckets上操作时，记住直方图是累计的。详见[直方图和总结](https://prometheus.io/docs/practices/histograms)
+使用[histogram_quantile()](https://prometheus.io/docs/querying/functions/#histogram_quantile)函数, 计算直方图或者是直方图聚合计算的分位数阈值。 一个直方图计算[Apdex值](http://en.wikipedia.org/wiki/Apdex)也是合适的, 当在buckets上操作时，记住直方图是累计的。详见[直方图和总结](https://prometheus.io/docs/practices/histograms)
 
 客户库的直方图使用文档：
  - [Go](http://godoc.org/github.com/prometheus/client_golang/prometheus#Histogram)
