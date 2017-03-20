@@ -17,7 +17,7 @@
 判断任何一个标签是否在抓取的时间序列数据中，取决于`honor_labels`配置选项。详见[文档](https://prometheus.io/docs/operating/configuration/#%3Cscrape_config%3E)
 
 对于每个实例，在下面的时间序列数据中，Prometheus存储了一个样本：
- - up{job="[job-name]", instance="instance-id"}: 如果时间是健康的，则up值等于1，否则，up值等于0，表示目标服务不可达。
+ - up{job="[job-name]", instance="instance-id"}: 如果实例是健康的，则up值等于1，否则，up值等于0，表示目标服务不可达。
  - scrape_duration_seconds{job="[job-name]", instance="[instance-id]"}: 抓取目标数据的持久性
 
 `up`度量指标对目标的健康监控是非常有用的。
