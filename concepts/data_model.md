@@ -16,7 +16,7 @@ Prometheus从根本上存储的所有数据都是[时间序列](http://en.wikipe
 
 ### Samples(样本)
 样本形成了时间序列数据。每一个样本包括：
-> <metric name>{<label name>=<label value>, ...}
+> "<metric name>{<label name>=<label value>, ...}"
 
 例如，度量指标名称是`api_http_requests_total`， 标签为`method="POST"`, `handler="/messages"` 的示例如下所示：
 > api_http_requests_total{method="POST", handler="/messages"}
