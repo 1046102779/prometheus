@@ -30,5 +30,13 @@
  - 查询
 
    [基本概念](querying/basics.md)
+   [操作符](querying/operators.md)
+   [函数](querying/functions.md)
+   [举例](querying/query_examples.md)
+   [记录规则](querying/recording_rules.md)
+   [HttpAPI访问](querying/http_api.md)
+
+ - 可视化
+   [表达式浏览器](virsualization/expression_browser.md)
 
 新手翻译，希望大家多多帮忙，谢谢
