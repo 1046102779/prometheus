@@ -696,6 +696,7 @@ Relabeling是一个非常强大的工具，在获取度量指标之前，它可�
 Alertmanagers可以通过`static_configs`参数静态配置，或者使用服务发现机制动态发现目标。
 
 另外，从发现的实体和使用的API路径，`relabel_configs`允许从发现的实体列表和提供可使用的API路径中选择路径。这个api path是通过`__alerts_path__`标签暴露出来的。
+
 ```
 # Per-target Alertmanager timeout when pushing alerts.
 [ timeout: <duration> | default = 10s ]
@@ -720,7 +721,7 @@ basic_auth:
 # read from the configured file. It is mutually exclusive with `bearer_token`.
 [ bearer_token_file: /path/to/bearer/token/file ]
 
-# Configures the scrape request's TLS settings.
+# Configures the scrape request''s TLS settings.
 tls_config:
   [ <tls_config> ]
 
@@ -759,7 +760,7 @@ kubernetes_sd_configs:
 marathon_sd_configs:
   [ - <marathon_sd_config> ... ]
 
-# List of AirBnB's Nerve service discovery configurations.
+# List of AirBnB''s Nerve service discovery configurations.
 nerve_sd_configs:
   [ - <nerve_sd_config> ... ]
 
