@@ -631,7 +631,7 @@ labels:
   [ <labelname>: <labelvalue> ... ]
 ```
 
-#### <label_config>
+#### <relabel_config>
 Relabeling是一个非常强大的工具，在获取度量指标之前，它可以动态地重写标签集合。 每个获取配置过程中，多个relabeling步骤能够被配置。它们按照出现在配置文件中的顺序，应用到每个目标的标签集中。
 
 最初，除了配置的每个目标标签之外，目标的作业标签设置为相应获取配置的`job_name`值，这个`__address__`标签设置为目标地址<host>:<port>。在relabeling之后，这个`instance`标签默认设置为`__address__`标签值。这个`__scheme__`和`__metrics_path__`标签设置为各自目标的范式和度量指标路径。 `__param_<name>`标签设置为成为`<name>`的第一个传入的URL参数。
@@ -678,7 +678,6 @@ Relabeling是一个非常强大的工具，在获取度量指标之前，它可�
  - `labelmap`: 匹配所有的标签名称，然后将匹配到的标签值复制为由匹配组引用(${1}, ${2},...) 替换的标签名称替换为其值
  - `labeldrop`: 匹配所有的标签名称。然后删除匹配到的标签集合。
  - `labelkeep`: 匹配所有的标签名称。然后保留匹配到的标签集合。
-```
 
 必须注意`labeldrop`和`labelkeep`, 以确保除去标签后，度量指标仍然会被唯一标识。
 
@@ -697,7 +696,7 @@ Alertmanagers可以通过`static_configs`参数静态配置，或者使用服务
 
 另外，从发现的实体和使用的API路径，`relabel_configs`允许从发现的实体列表和提供可使用的API路径中选择路径。这个api path是通过`__alerts_path__`标签暴露出来的。
 
-```
+```config
 # Per-target Alertmanager timeout when pushing alerts.
 [ timeout: <duration> | default = 10s ]
 
@@ -721,7 +720,7 @@ basic_auth:
 # read from the configured file. It is mutually exclusive with `bearer_token`.
 [ bearer_token_file: /path/to/bearer/token/file ]
 
-# Configures the scrape request''s TLS settings.
+# Configures the scrape request's TLS settings.
 tls_config:
   [ <tls_config> ]
 
@@ -760,7 +759,7 @@ kubernetes_sd_configs:
 marathon_sd_configs:
   [ - <marathon_sd_config> ... ]
 
-# List of AirBnB''s Nerve service discovery configurations.
+# List of AirBnB's Nerve service discovery configurations.
 nerve_sd_configs:
   [ - <nerve_sd_config> ... ]
 
@@ -780,6 +779,7 @@ static_configs:
 relabel_configs:
   [ - <relabel_config> ... ]
 ```
+
 #### <remote_write>
 **远程写是实验性的：在将来的版本中配置可能会实质性地变化**
 
