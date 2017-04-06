@@ -12,12 +12,12 @@ ALERT <alert name>
     [ FOR <duration> ]
       [ LABELS <label set> ]
         [ ANNOTATIONS <label set> ]
-        ```
-        `FOR`选项语句会使Prometheus服务等待指定的时间, 在第一次遇到新的表达式输出向量元素（如：具有高HTTP错误率的实例）之间，并将该警报统计为该元素的触发。如果该元素的活跃的，且尚未触发，表示正在挂起状态。
+```
+`FOR`选项语句会使Prometheus服务等待指定的时间, 在第一次遇到新的表达式输出向量元素（如：具有高HTTP错误率的实例）之间，并将该警报统计为该元素的触发。如果该元素的活跃的，且尚未触发，表示正在挂起状态。
 
-        `LABELS`选项语句允许指定额外的标签列表，把它们附加在警告上。任何已存在的冲突标签会被重写。这个标签值能够被模板化。
+`LABELS`选项语句允许指定额外的标签列表，把它们附加在警告上。任何已存在的冲突标签会被重写。这个标签值能够被模板化。
 
-        `ANNOTATIONS`选项语句指定了另一组标签，它们不被当做警告实例的身份标识。它们经常用于存储额外的信息，例如：警告描述，后者runbook链接。这个注释值能够被模板化。
+`ANNOTATIONS`选项语句指定了另一组标签，它们不被当做警告实例的身份标识。它们经常用于存储额外的信息，例如：警告描述，后者runbook链接。这个注释值能够被模板化。
 
 ### Templating 模板
 ```
@@ -39,7 +39,7 @@ ALERT APIHighRequestLatency
               summary = "High request latency on {{ $labels.instance }}",
                   description = "{{ $labels.instance }} has a median request latency above 1s (current value: {{ $value }}s)",
                     }
-                    ```
+```
 
 ### 运行时检查警告
 为了能够手动检查哪个警告是活跃的（挂起或者触发），导航到你的Prometheus服务实例的"Alerts"tab页面。这个会显示精确的标签集合，它们每一个定义的警告都是当前活跃的。
