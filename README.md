@@ -44,5 +44,43 @@
  - 可视化
 
    [表达式浏览器](virsualization/expression_browser.md)
+   
+   [Grafana](virsualization/grafana.md)
+
+   [控制模板](virsualization/console_template.md)
+
+ - Instrumenting
+
+   [客户库](instrumenting/client_libraries.md)
+
+   [写客户库](instrumenting/writing_client_libaries.md)
+
+   [推送度量指标](instrumenting/pushing_metrics.md)
+
+   [导出与集成](instrumenting/exporters.md)
+
+   [写导出器](instrumenting/writing_exporters.md)
+
+   [导出格式](instrumenting/exposition_formats.md)
+
+ - 操作
+   
+   [配置](operating/configuration.md)
+
+   [存储](operating/storage.md)
+
+   [federation](operating/federation.md)
+
+ - 警告
+   
+   [警告概览](alerting/overview.md)
+
+   [警告器](alerting/alertmanager.md)
+
+   [配置](alerting/configuration.md)
+
+   [警告规则](alerting/alert_rules.md)
+
+   [客户端](alerting/clients.md)
 
 新手翻译，希望大家多多帮忙，谢谢
