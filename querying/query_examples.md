@@ -22,10 +22,10 @@
 返回度量指标名称`http_requests_total`，且过去5分钟的所有时间序列数据值速率。
 > rate(http_requests_total[5m])
 
-假设度量名称是`http_requests_total`，且过去5分钟的所有时间序列数据的速率和，并保留输出时间序列标签名称`job`
+假设度量名称是`http_requests_total`，且过去5分钟的所有时间序列数据的速率和，速率的维度是job
 > sum(rate(http_requests_total)[5m]) by (job)
 
-如果我们有相同维度标签，但是不同的度量指标名称，我们可以使用二元操作符。具有相同标签集合的元素将会输出。例如，下面这个表达式返回每一个实例剩余内存，单位是M, 如果不同，则需要使用`ignoring(label_lists)`，如果多对一，则采用group_left, 如果是一对多，则采用group_right。
+如果我们有相同维度标签，我们可以使用二元操作符计算样本数据，返回值：key: value=标签列表：计算样本值。例如，下面这个表达式返回每一个实例剩余内存，单位是M, 如果不同，则需要使用`ignoring(label_lists)`，如果多对一，则采用group_left, 如果是一对多，则采用group_right。
 > (instance_memory_limit_byte - instant_memory_usage_bytes) / 1024 / 1024
 
 相同表达式，求和可以采用下面表达式：
@@ -37,7 +37,8 @@
 > instance_cpu_time_ns{app="turtle", proc="api", rev="4d3a513", env="prod", job="cluster-manager"}
 > ...
 
-我们可以获取最高的3个CPU使用率，且结果中带有`app`和`proc`的标签时间序列。
+我们可以获取最高的3个CPU使用率，按照标签列表`app`和`proc`分组
+> topk(3, sum(rate(instance_cpu_time_ns[5m])) by(app, proc))
 
 假设一个服务实例只有一个时间序列数据，那么我们通过下面表达式，可以统计出每个应用的实例数量：
 > count(instance_cpu_time_ns) by (app)
