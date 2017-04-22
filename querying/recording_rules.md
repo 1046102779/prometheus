@@ -20,10 +20,10 @@ Prometheus支持可以配置，然后定期执行的两种规则: recording rule
 > \<new time series name\>[{\<label overrides\>}] = \<expression to record\>
 
 一些例子：
-> # 计算每个进程http请求总数，保存到新的度量指标中
+> # 计算每个job的http请求总数，保存到新的度量指标中
 > job:http_inprogree_requests:sum = sum(http_inprogress_requests) by (job)
 > 
 > # 放弃老标签，写入新标签的结果时间序列数据：
 > new_time_series{label_to_change="new_value", label_to_drop=""} = old_time_series
 
-记录规则将以Prometheus配置中的`evaluate_interval`字段指定的间隔进行评估。在么个评估周期中，规则语句的右侧表达式将在当前时刻进行评估，并将生成的样本向量作为一组新的时间序列存储，这个时间序列带有当前时间戳和新的指标名称
+记录规则的执行周期有Prometheus的配置文件中的`evaluate_interval`指定。规则语句的右侧表达式一旦被执行，则新的时间戳key为当前时间，value为右边表达式的样本值，新的度量指标名称和标签列表为左边名称。
