@@ -2,7 +2,7 @@
 ---
 控制模板允许使用[Go语言模板](http://golang.org/pkg/text/template/)创建任意的console。这些由Prometheus服务提供
 
-console模板是最强有力的方法，它可以在源码控制中创建容易管理的模板，这里有一个学习曲线，所以用户在使用这种新的风格时，应该首先尝试Grafana。
+console模板是最强有力的方法，它可以在源码控制中创建容易管理的模板。我们可以首先尝试Grafana，减少学习成本。
 
 ### Getting started
 Prometheus提供了一系列的控制模板来帮助您。这些可以在Prometheus服务上的`console/index.html.example`中找到，如果Prometheus服务正在删除带有标签`job="node"`的Node Exporter, 则会显示NodeExporter控制台

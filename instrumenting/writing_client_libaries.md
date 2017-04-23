@@ -48,9 +48,9 @@ MUST/MUST NOT/SHOULD/SHOULD NOT/MAY在[https://www.ietf.org/rfc/rfc2119.txt](htt
 
 这些主要用作文件静态变量，也就是说，全局变量与他们正在调试的代码在同一个文件中定义。客户端库应该启用此功能。常见的用例是整体测试一段代码，而不是在对象的一个实例上下文中的一段代码。用户不必担心在他们的代码中管理他们的指标，客户端库应该为他们做到这一点（如果不这样做，用户将会围绕库写一个`wrapper`, 使其更容易，少即是多）。
 
-必须有一个默认的`CollectorRegistry`， 标准的度量指标必须默认被注册，不需要用户干预。必须有一种方法，使度量指标不默认注册到`CollectorRegistry`中，用于批处理作业和单元测试。自定义的`Collectors`也应该遵循这点。
+必须有一个默认的`CollectorRegistry`， 四种度量指标类型必须在不需要用户任何干预下，就能完成默认被注册，同时也提供一种别的注册方法，用于批处理作业和单元测试。自定义的`Collectors`也应该遵循这点。
 
-究竟应该如何创建度量指标因语言而异。对于某些语言（Go，Java），构建器是最好的，对于其他（Python）函数参数足够丰富，可以在一个调用中执行。
+究竟应该如何创建度量指标因语言而异。对于某些语言（Go，Java），builder是最好的，对于其他（Python）函数参数足够丰富，可以在一个调用中执行。
 
 例如，一个简单的Java客户端，我们可以这样写：
 ```Java
@@ -61,7 +61,7 @@ class YourClass {
 }
 ```
 
-使用默认的`CollectorRegistry`进行注册。通过调用build()而不是register(), 度量指标将不会被注册（对于单元测试来说很方便），你还可以将`CollectorRegistry`传递给register()(方便批作业处理)。
+上面的例子，使用默认的`CollectorRegistry`进行注册。如果只是调用build()方法， 度量指标将不会被注册（对于单元测试来说很方便），你还可以将`CollectorRegistry`传递给register()(方便批作业处理)。
 
 #### Counter
 `Counter`[https://prometheus.io/docs/concepts/metric_types/#counter]是一个单调递增的计数器。它不允许counter值下降，但是它可以被重置为0（例如：客户端服务重启）。
@@ -92,7 +92,7 @@ gauge应该有以下方法：
 gauge被建议有：
  - 一种在某些代码/方法中跟踪正在进行的请求方法。这是python种的`track_inprogress`。
 
-执行代码块的时间，并将测量仪设置为其持续时间（秒），这对于批量任务是非常有用的。在Java中是`startTimer/setDuration`， 在python中是`time()` decorator/上下文管理器。这应该符合在`Summary`和`Histogram`中的pattern(通过`set()`而不是`observe()`)。
+执行一段代码，设置gauge类型数据样本值为这段代码执行的时间，这对于批量任务是非常有用的。在Java中是`startTimer/setDuration`， 在python中是`time()` decorator/上下文管理器。这应该符合在`Summary`和`Histogram`中的pattern(通过`set()`而不是`observe()`)。
 
 #### Summary
 [summary](https://prometheus.io/docs/concepts/metric_types/#summary)通过时间滑动窗口抽样观察（通常是要求持续时间），并提供对其分布、频率和总和的即时观察。
@@ -108,11 +108,11 @@ summary应该有以下方法：
 Summary `_count/_sum`必须从0开始。
 
 #### Histogram
-[Histogram](https://prometheus.io/docs/concepts/metric_types/#histogram)允许时间的可聚合分布，如：请求延迟。这是counter/bucket的核心。
+[Histogram](https://prometheus.io/docs/concepts/metric_types/#histogram)允许时间的可聚合分布，如：请求延迟。每个bucket中都会有一个count值, 表示累加的样本数量值
 
-一个histogram直方图不允许使用`le`作为一个用户集合标签，该标签内部用于指定buckets。
+一个histogram直方图不允许使用`le`作为一个标签，它已经内部用于在分bucket时的步长大小。
 
-直方图必须提供一个方法来手动选择buckets。应该提供一现行（start，factor和count）和指数（start，factor和count）方式设置buckets的方法。counter必须排序+Inf bucket
+直方图必须提供一个方法来手动选择buckets。应该提供一linear(start, width, count)和exponential(start，factor, count）方式设置buckets的方法。参数count值必须是有界的
 
 直方图应该具有与其他客户端库相同的默认值，创建度量指标后bucket不能再更改。
 
@@ -130,17 +130,17 @@ Summary `_count/_sum`必须从0开始。
 如果有一个常见用例，例如：次优度量指标/标签布局或者在客户端进行计算，可以使其更简单。
 
 #### 标签
-标签Labels是Prometheus系统最强大的一个方面，但是很容易被滥用。因此，客户端库必须非常小心地如何向用户提供labels。
+标签Labels是Prometheus系统最强大的特性之一，但是很容易被滥用。因此，客户端库必须非常小心地如何向用户提供labels。
 
-客户库在任何情况下不得允许用户对于"Gauge/counter/summary/histogram"或者由库提供的其他Collector相同度量指标名称，有相同不同的labels名称。
+客户库在任何情况下禁止用户对于"Gauge/counter/summary/histogram"或者由库提供的其他Collector的度量指标，提供不相同的标签列表。
 
-如果你的客户库在收集时刻对其进行了度量指标的验证，那么它也可以为自定义Collector进行验证。
+如果你的客户库在收集样本数据时间内对其进行了度量指标的验证，那么它也可以为自定义Collector进行验证。
 
-虽然标签功能很强大，但大多数度量指标不会有标签。因此，API应该允许有标签，但不支持配标签。
+虽然标签功能很强大，但大多数度量指标没有标签。因此，API允许有标签，但不是强制的。
 
-客户库必须允许在Gauge/Counter/Summary/Histogram创建时间可选地指定标签名称列表。客户端库应该支持任意数量的标签名称。客户端库必须验证标签名称符合已记录的要求。
+客户库必须允许在Gauge/Counter/Summary/Histogram创建时间可选地指定标签名称列表。客户端库应该支持任意大小的标签列表。客户端库必须验证标签名称是否符合[要求](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels)。
 
-提供对度量指标的标记维度访问的一般方式是通过`labels()`方法，该方法可以使用标签纸的列表或者从标签名称到标签纸的映射，并返回“child”，然后在Child上调用通常的`.inc()/.desc()/.observe()`等方法。
+提供访问度量指标名称列表最常用的方法, 是通过`labels()`方法，该方法可以获取标签值列表，或者获取Map键值对(标签名称：标签值)列表，并返回“child”，然后在Child上调用常用的`.inc()/.desc()/.observe()`等方法。
 
 `label()`返回Child应该由用户缓存，以避免再次查找，这在延迟至关重要的代码中很重要。
 带有标签的度量指标应该支持一个具有与`labels()`相同签名的`remove()`方法，它将从不再导出它的度量标准中删除一个Child，另一个clear()方法可以从度量指标中删除所有的`Child`。
@@ -150,22 +150,22 @@ Summary `_count/_sum`必须从0开始。
 #### 度量指标名称
 度量指标名称补习遵循规范。与标签名称一样，必须满足使用`Counter/Gauge/Summary/Histogram`和库中提供的任意其他`Collector`的使用。
 
-许多客户库提供三个部分的名称：`namespace_subsystem_name`, 其中只有该名称是强制性的。
+许多客户库提供三个部分的名称：`namespace_subsystem_name`, 其中只有该`name`是强制性的。
 
-必须不鼓励使用动态/生成的度量指标名称或者其子部分，除非自定义"Collector"是从其他工具/监控系统代理的。生成/动态度量指标名称是你应该使用标签的标志。
+不鼓励使用动态/自动生成的度量指标名称或者其子部分，除非自定义"Collector"是从其他工具/监控系统代理的。你可以使用标签名称替代动态或者自动生成的度量指标名称。
 
 #### 度量指标描述和帮助
-`Gauge/Counter/Summary/Histogram`要求必须提供度量指标的描述和帮助。
+`Gauge/Counter/Summary/Histogram`要求必须提供度量指标的desc和help。
 
-客户端中任何自定义的Collectors必须在度量指标名称上有一个描述和帮助。
+带有自定义Collector的客户库，在度量指标上必须有desc/help
 
-建议将其作为强制性参数，但不要检查它是否具有一定长度，就好像有人真的不想写文档，否则我们不会说服他们。库中的Collector（以及我们再生态系统内部的任何地方）应该以良好的度量指标为例。
+建议将度量指标名称的desc/help作为强制性参数，但不需要检查其长度，提供Collectors的库应该要有一个比较好的desc，帮助理解其含不需要检查其长度，提供Collectors的库应该要有一个比较好的desc，帮助理解其含义.
 
-### 阐述
+### 导出
 
-客户端必须实现一个文档阐述格式。
+客户端必须实现一个文档[导出格式](https://prometheus.io/docs/instrumenting/exposition_formats)。
 
-客户端可以实现多种格式。应该是可读性非常好的格式。
+客户端可以实现多种导出格式。而且是可读性非常好的格式。
 
 如果有疑问，请去文本格式。它不具有依赖性（protobuf），往往易于生成，是可读取的，并且protobuf的性能优势对于大多数用例来说并不重要。
 
@@ -173,8 +173,8 @@ Summary `_count/_sum`必须从0开始。
 
 ### 标准化和运行时收集器
 
-客户端库应该提供标准导出的内容，如下所述：
-这些应该作为自定义收集器实现，默认情况下在默认的CollectorRegistry上注册。应该有一种方法来禁用这些，因为有一些非常适用于他们的使用方式。
+客户端库应该提供标准导出，如下所述：
+这些应该作为自定义Collectors实现，默认情况下在默认的CollectorRegistry上注册。应该有一种方法来禁用这些，因为有一些非常适用于他们的使用方式。
 
 #### 处理度量指标
 这些导出应该有前缀process_。如果一种语言或者运行时没有公开其中一个变量，它不会被导出它。所有内存值以字节为单位，以时间戳/秒为单位。
