@@ -1,11 +1,14 @@
 ## 导出和集成
 ---
-有很多库和服务能够从帮助第三方系统的度量指标导出为Prometheus的度量指标。这对于（例如：HAProxy或者Linux系统统计信息）不能直接使用Prometheus度量指标是非常有用的。
+有很多库和服务, 支持从第三方系统的度量指标导入到Prometheus的度量指标。这对于（例如：HAProxy或者Linux系统统计信息）不能直接使用Prometheus度量指标是非常有用的。
+
 
 ### 第三方导出器
 有一些exporter主要有Prometheus Github组织维护的,详见[地址](https://github.com/prometheus)，这些项目被标记为**official**， 其他都是由外部贡献和维护的。
 
 我们鼓励更多exporters的出现，但无法对所有人进行推广，通常这些exporters被托管在Prometheus Github组织之外。
+
+[导出器默认端口](https://github.com/prometheus/prometheus/wiki/Default-port-allocations)wiki页面已经成为了导出器的目录列表，包括的一些不在这里列出的导出器，主要原因是有些导出器功能类似，或者还在开发中。
 
 [JMX exporter](https://github.com/prometheus/jmx_exporter)能够从大多数JVM应用中导出数据，例如：kafka和cassandra。
 
