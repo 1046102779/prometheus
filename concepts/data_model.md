@@ -15,7 +15,13 @@ Prometheus从根本上存储的所有数据都是[时间序列](http://en.wikipe
 具体详见[metrics和labels命名最佳实践](https://prometheus.io/docs/practices/naming/)。
 
 ### Samples(样本)
-样本形成了时间序列数据。每一个样本包括：
+样本形成了实际的时间序列数据。每一个样本包括：
+ - 一个64位的浮点值
+ - 一个精确到毫秒级的时间戳
+一个样本数据集是针对一个指定的时间序列在一定时间范围的数据收集。这个时间序列是由<metric_name>{<label_name>=<label_value>, ...}
+
+### Notation(符号)
+表示一个度量指标和一组键值对标签，需要使用以下符号：
 >  [metric name]{[label name]=[label value], ...}
 
 例如，度量指标名称是`api_http_requests_total`， 标签为`method="POST"`, `handler="/messages"` 的示例如下所示：

@@ -22,14 +22,42 @@ Prometheus客户库提供了四个核心的metrics类型。这四种类型目前
  - [Python](https://github.com/prometheus/client_python#gauge)
  - [Ruby](https://github.com/prometheus/client_ruby#gauge)
 
-### Histogram[直方图]
-*histogram*对观察结果结果(通常是请求持续时间或者响应大小)进行采样，并在可配置的桶中对其进行技术。它还提供所有观察值的总和
+### Histogram
+*histogram*对观察结果(通常是请求持续时间或者响应大小)进行采样，并在可配置的桶中对其进行统计。它还提供所有观察值的总和
 
-带有度量指标名称为`[basename]`的直方图会展示Prometheus服务抓取的时间序列数据
- - [base]_bucket{le="<="}, 是指观察buckets的累计计数器
+带有度量指标名称为`[basename]`的histogram会展示Prometheus服务抓取的时间序列数据
+ - [base]_bucket{le="<upper inclusive bound"}, 是指观察buckets的累计计数器
  - [basename]_sum, 是指观察值总和
  - [basename]_count,是指已经观察到的事件总计数
 
+`histogram理解：`对每个度量指标进行histogram统计，会生成三个度量指标数据，分别是<basename>_bucket, <basename>_sum, 和<basename>_count三个度量指标，对于`<basename>_bucket`: 会有三个数据输入，一个是基准值，一个是每次增长的步长，一个是横坐标的长度。 
+例子：统计`pond_temperature_celsius`的histogram, 输入<20, 5, 5>, 采样两千次:30 + math.Floor(120*math.Sin(float64(i)*0.1))/10), 结果：
+```
+histogram: <
+  sample_count: 2000
+  sample_sum: 59968.60000000001
+  bucket: <
+    cumulative_count: 383
+    upper_bound: 20
+  >
+  bucket: <
+    cumulative_count: 729
+    upper_bound: 25
+  >
+  bucket: <
+    cumulative_count: 1002
+    upper_bound: 30
+  >
+  bucket: <
+    cumulative_count: 1278
+    upper_bound: 35
+  >
+  bucket: <
+    cumulative_count: 1632
+    upper_bound: 40
+  >
+>
+```
 使用[histogram_quantile()](https://prometheus.io/docs/querying/functions/#histogram_quantile)函数, 计算直方图或者是直方图聚合计算的分位数阈值。 一个直方图计算[Apdex值](http://en.wikipedia.org/wiki/Apdex)也是合适的, 当在buckets上操作时，记住直方图是累计的。详见[直方图和总结](https://prometheus.io/docs/practices/histograms)
 
 客户库的直方图使用文档：
@@ -45,6 +73,26 @@ Prometheus客户库提供了四个核心的metrics类型。这四种类型目前
  - 观察时间的φ-quantiles (0 ≤ φ ≤ 1), 显示为`[basename]{分位数="[φ]"}`
  - `[basename]_sum`， 是指所有观察值的总和
  - `[basename]_count`, 是指已观察到的事件计数值
+
+`summaries理解`:  分位数分别是0.5,  0.9,  0.99
+ ```
+summary: <
+  sample_count: 1000
+  sample_sum: 29969.50000000001
+  quantile: <
+    quantile: 0.5
+    value: 31.1
+  >
+  quantile: <
+    quantile: 0.9
+    value: 41.3
+  >
+  quantile: <
+    quantile: 0.99
+    value: 41.9
+  >
+>
+ ```
 
 详见[histogram和summaries](https://prometheus.io/docs/practices/histograms)
 

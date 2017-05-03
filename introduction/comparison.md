@@ -1,27 +1,31 @@
 ## 监控系统产品比较
 ### Prometheus vs. Graphite
 #### 范围
-Graphite专注于查询语言和图表特征的时间序列数据库。其他需求都需要依赖外部组件实现。
+Graphite专注于查询语言和图表特征的时间序列数据库。其他都需要依赖外部组件实现。
 
-Prometheus是一个基于时间序列数据的完整监控系统和趋势系统，包括内置和主动抓取、存储、查询、图表和警告。它懂得监控系统和趋势系统应该是什么样的（哪些目标机应该存在，哪些时间序列模型存在问题等等），并积极地试着找出故障
+Prometheus是一个基于时间序列数据的完整监控系统和趋势系统，包括内置和主动抓取、存储、查询、图表展示和报警功能。它懂得监控系统和趋势系统应该是什么样的（哪些目标机应该存在，哪些时间序列模型存在问题等等），并积极地试着找出故障
 
 #### 数据模型
-Graphite和Prometheus一样，存储时间序列数值采样点。然而，Prometheus的元数据模型更加丰富：Graphite的度量指标名称是由隐式地编码多维度的点分隔命名的，而Prometheus的度量指标是可以自定义名称的，并以key-value键值对的标签，赋给度量指标。通过这些标签，我们使用Prometheus查询语言，可以方便地进行时间序列数据的过滤、分组、匹配操作。
+Graphite和Prometheus一样，存储时间序列数值样本。但是Prometheus的元数据模型更加丰富：Graphite的度量指标名称是由"."分隔符，隐式地编码多维度。而Prometheus度量指标是可以自定义名称的，并以key-value键值对的标签形式，成为度量指标的标签属性列表。并在此基础上，使用Prometheus查询语言可以轻松地进行过滤，分组和匹配操作。
 
 进一步地，当Graphite与StatsD结合使用时，Graphite就只是对一个聚合数据的存储系统了，而不是把目标实例作为一个维度，并深入分析目标实例出现的各种问题。
 
-例如：我们用Graphite/StatsD监控系统存储api-server服务Http请求的数量，前置条件包括：返回码是`500`，请求方法是`POST`，访问URL为`/tracks` , 度量指标自动隐式地编码，如下所示：
-> stats.api-server.tracks.post.500 -> 93
+例如：我们用Graphite/StatsD统计HTTP请求api-server服务的数量，前置条件：返回码是`500`，请求方法是`POST`，访问URL为`/tracks` , key如下所示：
+```
+stats.api-server.tracks.post.500 -> 93
+```
 
 但是在Prometheus中同样的数据存储可能像下面一样(假设有三个api-server)：
-> api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample1>"} -> 34
-> api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample2>"} -> 28
-> api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample3>"} -> 31
+```
+api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample1>"} -> 34
+api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample2>"} -> 28
+api_server_http_requests_total{method="POST",handler="/tracks",status="500",instance="<sample3>"} -> 31
+```
 
 由上可以看到，三个api-server各自的度量指标数据，Prometheus把api-server也作为了一个维度，便于分析api-server服务出现的各种问题
 
 #### 存储
-Graphite存储以[Whisper](http://graphite.readthedocs.org/en/latest/whisper.html)把时间序列数据存储到本地磁盘，这种数据存储格式是RRD风格的数据库，它期望采样点定期地到达。 任何时间序列在一个单独的文件中存储，一段时间后新采集的样本会覆盖老数据
+Graphite存储以[Whisper](http://graphite.readthedocs.org/en/latest/whisper.html)方式把时间序列数据存储到本地磁盘，这种数据存储格式是RRD格式数据库，它期望样本能够定期到达。 任何时间序列在一个单独的文件中存储，一段时间后新采集的样本会覆盖老数据
 
 Prometheus也为每一个时间序列创建了一个本地文件，但是它允许时间序列以任意时间到达。新采集的样本被简单地追加到文件尾部，老数据可以任意长的时间保留。Prometheus对于短生命周期、且经常变化的时间序列集也可以表现得很好
 
