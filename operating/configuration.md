@@ -1,19 +1,19 @@
 ## 配置configuration
 ---
-通过命令行flags和配置文件，Prometheus是可配置的。虽然命令行配置不可变系统参数（例如：存储位置，保留在磁盘和内存中的数据量等），但配置文件定义了与抓取[作业及其实例](https://prometheus.io/docs/concepts/jobs_instances/)相关的所有内容以及哪些[规则文件加载](https://prometheus.io/docs/querying/rules/#configuring-rules)。
+Prometheus可以通过命令行参数和配置文件来配置它的服务参数。命令行主要用于配置系统参数（例如：存储位置，保留在磁盘和内存中的数据量大小等），配置文件主要用于配置与抓取[任务和任务下的实例](https://prometheus.io/docs/concepts/jobs_instances/)相关的所有内容, 并且加载指定的抓取[规则file](https://prometheus.io/docs/querying/rules/#configuring-rules)。
 
-为了查看所有的Prometheus可用的命令，可以运行`prometheus -h`命令
+可以通过运行`prometheus -h`命令, 查看Prometheus服务所有可用的命令行参数，
 
-Prometheus可以动态重载它的配置。如果这个新配置有错误，则配置不生效。配置重载是通过给Prometheus服务发送信号量`SIGHUP`或者通过http发送一个post请求到`/-/reload`。这也会重载所有配置的规则文件(rule files)。
+Prometheus服务可以reload它的配置。如果这个配置错误，则更改后的配置不生效。配置reolad是通过给Prometheus服务发送信号量`SIGHUP`或者通过http发送一个post请求到`/-/reload`。这也会重载所有配置的规则文件(rule files)。
 
 ### 配置文件 Configuration file
-为了指定启动加载的配置文件，请使用`-config.file`标志
+使用`-config.file`命令行参数来指定Prometheus启动所需要的配置文件。
 
-这个配置文件是[YAML](http://en.wikipedia.org/wiki/YAML)格式， 通过下面描述的范式定义，括号表示参数是可选的。对于非列表参数，这个值被设置了默认值。
+这个配置文件是[YAML](http://en.wikipedia.org/wiki/YAML)格式， 通过下面描述的范式定义, 括号表示参数是可选的。对于非列表参数，这个值被设置了默认值。
 
 通用占位符由下面定义：
  - `\<boolean\>`: 一个布尔值，包括`true`或者`false`.
- - `\<duration\>`: 一个与正则表达式`[0-9]+(ms|smhdwy)`匹配的持续时间
+ - `\<duration\>`: 持续时间，与正则表达式`[0-9]+(ms|smhdwy)`匹配
  - `\<labelname\>`: 一个与正则表达式`[a-zA-Z_][a-zA-Z0-9_]*`匹配的字符串
  - `\<labelvalue\>`: 一个为unicode字符串
  - `\<filename\>`: 当前工作目录下的有效路径
@@ -29,36 +29,35 @@ Prometheus可以动态重载它的配置。如果这个新配置有错误，则�
 全局配置指定的参数，在其他上下文配置中是生效的。这也默认这些全局参数在其他配置区域有效。
 ```
 global:
-    # How frequently to scrape targets by default.
+    # 抓取目标实例的频率时间值，默认10s
     [ scrape_interval: <duration> | default = 10s ]
 
-    # How long util a scrape request times out.
+    # 一次抓取请求超时时间值，默认10s
     [ scrape_timeout: <duration> | default = 10s ]
 
-    # How frequently to evaluate rules.
+    # 执行配置文件规则的频率时间值, 默认1m
     [ evaluation_interval: <duration> | default=1m ]
 
-     # The labels to add to any time series or alerts when communicating with
-      # external systems (federation, remote storage, Alertmanager).
+    # 当和外部系统通信时(federation, remote storage, Alertmanager), 这些标签会增加到度量指标数据中
     external_labels:
         [ <labelname>: <labelvalue> ... ]
 
-# Rule files specifies a list of globs. Rules and alert are read from all matching files.
+# 规则文件指定规则文件路径列表。规则和警报是从所有匹配的文件中读取的
 rule_files:
     [ - <filepath_glob> ...]
 
-# A list of scrape configurations.
+# 抓取配置的列表
 scrape_configs:
     [ - <scrape_config> ... ]   
 
-# Alerting specifies settings related to the Alertmanager.
+# 警报设置
 alerting:
     alert_relabel_configs:
     [  - <relabel_config> ... ]
     alertmanagers:
     [ - <alertmanager_config> ... ]
 
-# Settings related to the experimental remote write feature.
+# 设置涉及到未来的实验特征
 remote_write:
     [url: <string> ]
     [ remote_timeout: <duration> | default = 30s ]
@@ -75,22 +74,22 @@ remote_write:
 
 
 #### <scrape_config>
-`<scrape_config>`块指定了要获取度量指标数据的目标集合和参数列表。通常，一个个scrape_config只指定一个job。高级配置的话，可以改变。
+`<scrape_config>`区域指定了目标列表和目标下的配置参数, 这些配置参数描述了如何抓取度量指标数据。通常，一个scrape_config只指定一个job，但是可以改变，一个scrape_config可以指定多个job，每个job下有多个targets
 
-目标通过`static_configs`参数，或者使用一些服务发现机制动态发现。
+通过`static_configs`参数静态指定要监控的目标列表，或者使用一些服务发现机制发现目标。
 
 另外，`relabel_configs`允许在获取度量指标数据之前，对任何目标和它的标签进行进一步地修改。
 ```
-# the job name assigned to scraped metrics by default.
+# 默认下任务名称赋值给要抓取的度量指标
 job_name: <job_name>
 
-# How frequently to scrape targets from this job
+# 从这个任务中抓取目标的频率时间值
 [ scrape_interval: <duration> | default= <global_config.scrape_interval>]
 
-# pre-scrape timeout when scraping this job.
+# 当抓取这个任务的所有目标时，超时时间值
 [ scrape_timeout: <duration> | default = <global_config.scrape_timeout> ]
 
-# the http resource path on which to fetch metrics from targets.
+# 从目标列表中抓取度量指标的http资源路径, 默认为/metrics
 [ metrics_path: <path> | default = /metrics ]
 
 # honor_labels controls how Prometheus handles conflicts between would labels that are already present in scraped data and labels that Prometheus would attach server-side ("job" and "instance" labels, manually configured target  labels, and labels generated by service discovery implementations).
@@ -100,14 +99,14 @@ job_name: <job_name>
 # only when a time series does not have a given label yet and are ignored otherwise.
 [ honor_labels: <boolean> | default = false ]
 
-# Configures the protocol scheme used for requests.
+# 配置请求的协议范式, 默认为http请求
 [ scheme: <scheme> | default = http ]
 
-# Optional HTTP URL parameters.
+# 可选的http url参数
 params:
     [ <string>:[<string>, ...]]
 
-# Sets the `Authorization` header on every scrape request with the configured username and password.
+# 在`Authorization`头部设置每次抓取请求的用户名和密码
 basic_auth:
 [username: <string>]
 [password: <string>]
@@ -119,61 +118,62 @@ basic_auth:
 # Sets the `Authorization` header on every scrape request with the bearer token read from the configured file. It is mutually exclusive with `bearer_token`.
 [ bearer_token_file: /path/to/bearer/token/file ]
 
-# Configures the scrape request's TLS settings.
+# 配置抓取请求的TLS设置
 tls_config:
   [ <tls_config> ]
-# Optional proxy URL.
+
+# 可选的代理URL
 [ proxy_url: <string> ]
 
-# List of Azure service discovery configurations.
+# 微软的Azure服务发现配置列表
 azure_sd_configs:
   [ - <azure_sd_config> ... ]
 
-# List of Consul service discovery configurations.
+# Consul服务发现配置列表
 consul_sd_configs:
   [ - <consul_sd_config> ... ]
 
-# List of DNS service discovery configurations.
+# DNS服务发现配置列表
 dns_sd_configs:
   [ - <dns_sd_config> ... ]
 
-# List of EC2 service discovery configurations.
+# 亚马逊EC2服务发现的配置列表
 ec2_sd_configs:
   [ - <ec2_sd_config> ... ]
 
-# List of file service discovery configurations.
+# 文件服务发现配置列表
 file_sd_configs:
   [ - <file_sd_config> ... ]
 
-# List of GCE service discovery configurations.
+# google GCE服务发现配置列表
 gce_sd_configs:
   [ - <gce_sd_config> ... ]
 
-# List of Kubernetes service discovery configurations.
+# Kubernetes服务发现配置列表
 kubernetes_sd_configs:
   [ - <kubernetes_sd_config> ... ]
 
-# List of Marathon service discovery configurations.
+# Marathon服务发现配置列表
 marathon_sd_configs:
   [ - <marathon_sd_config> ... ]
 
-# List of AirBnB's Nerve service discovery configurations.
+# AirBnB的Nerve服务发现配置列表
 nerve_sd_configs:
   [ - <nerve_sd_config> ... ]
 
-# List of Zookeeper Serverset service discovery configurations.
+# Zookeeper服务发现配置列表
 serverset_sd_configs:
   [ - <serverset_sd_config> ... ]
 
-# List of Triton service discovery configurations.
+# Triton服务发现配置列表
 triton_sd_configs:
   [ - <triton_sd_config> ... ]
 
-# List of labeled statically configured targets for this job.
+# 静态配置目标列表
 static_configs:
   [ - <static_config> ... ]
 
-# List of target relabel configurations.
+# 抓取之前的标签重构配置列表
 relabel_configs:
   [ - <relabel_config> ... ]
 
@@ -192,10 +192,10 @@ metric_relabel_configs:
 #### <tls_config>
 `<tls_config>`允许配置TLS连接。
 ```
-# CA certificate to validate API server certificate with.
+# CA证书
 [ ca_file: <filename> ]
 
-# Certificate and key files for client cert authentication to the server.
+# 证书和key文件
 [ cert_file: <filename> ]
 [ key_file: <filename> ]
 
@@ -241,7 +241,7 @@ client_secret: <string>
 ```
 
 #### <consul_sd_config>
-Consule SD配置允许从Consule's Catalog API中检索和获取目标。
+Consul服务发现配置允许从Consul's Catalog API中检索和获取目标。
 
 下面的meta标签在relabeling期间在目标上仍然是可用的：
  - `__meta_consul_address`: 目标地址
@@ -254,8 +254,7 @@ Consule SD配置允许从Consule's Catalog API中检索和获取目标。
  - `__meta_consul_tags`: 由标签分隔符链接的目标的标签列表
 
 ```
-# The information to access the Consul API. It is to be defined
-# as the Consul documentation requires.
+# 下面配置是访问Consul API所需要的信息
 server: <host>
 [ token: <string> ]
 [ datacenter: <string> ]
@@ -263,8 +262,7 @@ server: <host>
 [ username: <string> ]
 [ password: <string> ]
 
-# A list of services for which targets are retrieved. If omitted, all services
-# are scraped.
+# 指定对于某个目标的服务列表被检测， 如果省略，所有服务被抓取
 services:
   [ - <string> ]
 
@@ -275,30 +273,30 @@ services:
 注意：用于获取目标的IP和PORT，被组装到`<__meta_consul_address>:<__meta_consul_service_port>`。然而，在一些Consul创建过程中，这个相关地址在`__meta_consul_service_address`。在这些例子中，你能使用[relabel](https://prometheus.io/docs/operating/configuration/#relabel_config)特性去替换指定的`__address__`标签。
 
 #### <dns_sd_config>
-一个基于DNS的服务发现配置允许指定一系列的DNS域名称，它们被定期的查询并发现目标列表。这些DNS服务是从`/etc/resolv.conf`获取的。
+一个基于DNS的服务发现配置允许指定一系列的DNS域名称，这些DNS域名被周期性地查询，用来发现目标列表。这些DNS服务是从`/etc/resolv.conf`获取的。
 
-这些服务发现方法仅仅支持基本的DNS A，AAAA和SRV记录查询，但是没有在RFC6763中指定更高级的DNS-SD方案。
+这些服务发现方法仅仅支持基本的DNS A，AAAA和SRV记录查询，但不支持在RFC6763中指定更高级的DNS-SD方案。
 
-在[relabeling phase](https://prometheus.io/docs/operating/configuration/#relabel_config)期间，这个标签`__meta_dns_name`在每一个目标上都是可用的，并且会设置生产发现的目标到记录名称中。
+在[重构标签阶段](https://prometheus.io/docs/operating/configuration/#relabel_config)，这个标签`__meta_dns_name`在每一个目标上都是可用的，并且会设置生产发现的目标到记录名称中。
 ```
-# A list of DNS domain names to be queried.
+# 将被查询的DNS域名列表
 names:
   [ - <domain_name> ]
 
-# The type of DNS query to perform.
+# 要执行DNS查询类型，默认为SRV， 其他方式：A、AAAA和SRV
 [ type: <query_type> | default = 'SRV' ]
 
-# The port number used if the query type is not SRV.
+# 如果查询类型不是SRV，这端口被使用
 [ port: <number>]
 
-# The time after which the provided names are refreshed.
+# 刷新周期, 默认30s
 [ refresh_interval: <duration> | default = 30s ]
 ```
 
-`<domain_name>`是一个有效的DNS域名。`<query_type>`是`SRV, A， AAAA`。
+`<domain_name>`必须是一个有效的DNS域名。`<query_type>`必须是`SRV, A， AAAA`三种之一。
 
 #### <ec2_sd_config>
-EC2 SD配置允许从AWS EC2实例中检索和获取目标。默认情况下用内网IP地址, 但是在relabeling期间公网IP地址可能会变化。
+EC2 SD配置允许从AWS EC2实例中检索目标。默认情况下用内网IP地址, 但是在relabeling期间可以改变成公网ID地址。
 
 下面meta标签在relabeling期间在目标上是可用的：
  
@@ -315,13 +313,12 @@ EC2 SD配置允许从AWS EC2实例中检索和获取目标。默认情况下用�
 
 对于EC2 discovery，看看下面的配置选项：
 ```
-# The information to access the EC2 API.
+# 访问EC2 API的信息
 
-# The AWS Region.
+# AWS域
 region: <string>
 
-# The AWS API keys. If blank, the environment variables `AWS_ACCESS_KEY_ID`
-# and `AWS_SECRET_ACCESS_KEY` are used.
+# AWS API keys. 如果空白，环境变量`AWS_ACCESS_KEY_ID`和`AWS_SECRET_ACCESS_KEY`可以被使用
 [ access_key: <string> ]
 [ secret_key: <string> ]
 # Named AWS profile used to connect to the API.
@@ -336,7 +333,7 @@ region: <string>
 ```
 
 #### <file_sd_config>
-基于文件的服务发现提供了一些通用方法去配置静态目标，以及作为插入自定义服务发现机制的接口。
+基于文件的服务发现提供了一些通用方法去配置静态目标，以及作为插件自定义服务发现机制的接口。
 
 它读取包含零个或者多个`<static_config>s`的一些文件。通过磁盘监视器检测对所有定义文件的更改，并立即应用。文件可能以YAML或JSON格式提供。只应用于形成良好目标群体的变化。
 
@@ -353,9 +350,9 @@ region: <string>
 ]
 ```
 
-作为回退，文件内容也会以指定的刷新间隔周期性重新读取。
+文件内容也可以通过周期性刷新时间重新加载。
 
-在relabeling phase期间，每个目标有一个meta标签`__meta_filepath`。它的值被设置成从目标中提取的文件路径。
+在标签重构阶段，每个目标有一个meta标签`__meta_filepath`。它的值被设置成从目标中提取的文件路径。
 ```
 # Patterns for files from which target groups are extracted.
 files:
