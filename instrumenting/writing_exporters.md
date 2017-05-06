@@ -117,49 +117,89 @@ Prometheus不喜欢一个度量指标名称有不同帮助文档。如果你正�
 例如：SNMP导出器使用OID，JMX导出器放入一个样例mBean名称中。HAProxy exporter有手写字符串。node exporter有大量的例子可以使用。
 
 #### 放弃无用的统计数据
-某些测量系统暴露1m/5m/15m速率，从应用程序启动以来的平均速率（例如：在dropwizard指标中统计为平均值），最小值，最大值和标准偏差。
+某些检测系统提供了一些度量指标，包含1m/5m/15m速率、程序运行到现在的平均速率（例如：在dropwizard指标中统计为平均值）、最小值、最大值和标准偏差。
 
-这些都应该被抛弃，因为它们不是非常有用, 并且增加了混乱。Prometheus可以自己计算费率，通常更准确（这些通常是指数衰减平均值）。你不知道什么时候计算最小/最大值，而stddev在统计上是无用的（如果你需要计算，则显示平方和，`_sum`和`_count`）
+这些检测系统的统计度量指标数据都应该被丢弃，因为Prometheus提供了同样的一套统计数据，数据类型为Summary，而且统计的样本数据更加准确，所以不需要再在写导出器时统计这类数据。
 
-Quantiles有相关问题，你可以选择丢弃或者将其放在摘要中
+Quantiles涉及的相关issue，你可以选择丢弃或者将其放在Summary中。
 
 #### .字符串(Dotted strings)
 许多监控系统没有标签，而是做成像`my.class.path.mymetric.labelvalue1.labelvalue2.labelvalue3`这样。
 
-graphite和statsd exporters分享一种使用小型配置语言执行此操作的方法。其他exporters也应该这样做。它目前仅在Go中实现，并将受益于将其分解为单独的库。
+graphite和statsd的导出器采用了一种使用配置文件来达到带有标签的目的。其他exporters也应该这样做。它目前仅在Go中实现，并将受益于将其分解为单独的库。
 
 ### Collectors
-在为你的exporter实现一个collector时，你绝对不要使用通常最直接的测量方法，然后更新每个获取的度量指标。
+当在导出器中实现收集器的功能模块时，你永远不要"使用通用且直接的检测方案，然后在每次抓取后更新度量指标样本数据"。
 
-相反，每次都会创建新的度量指标。在Go中，使用Update()方法中的MustNewConstMetric完成此操作。对于Python，请参与[https://github.com/prometheus/client_python#custom-collectors](https://github.com/prometheus/client_python#custom-collectors), 对于Java，在Collector方法中生成列表\<MetricFamilySamples\>, 请参与StardardExports.java作为示例。
+我们宁愿在抓取度量指标数据时，创建新的度量指标。在Go中，在Update()方法中调用[MustNewConstMetric](https://godoc.org/github.com/prometheus/client_golang/prometheus#MustNewConstMetric)完成此操作。对于Python，请参与[https://github.com/prometheus/client_python#custom-collectors](https://github.com/prometheus/client_python#custom-collectors), 对于Java，在Collector方法中生成列表\<MetricFamilySamples\>, 请参与StardardExports.java作为示例。
 
-这样做得原因首先是两次获取可能出现同时现象，直接使用有效的（文件级别）的全局变量，你会获取竞争条件。第二个原因是如果标签值消失，它仍然可以被导出。
+我们在抓取数据时采用创建度量指标的方案，主要有两个原因： 1. 如果在同一时刻发生两次抓取，这样在度量指标数据时会发生资源竞争问题；2. 如果一个度量指标的标签值消失后，更新度量指标数据，那么空标签数据还是会被导出。
 
-通过直接测量来调整你的exporter是非常好的，例如：传输的总字节数或者exporter获取的所有度量指标数据中的操作。对于exporters而言，例如：黑盒exporters和snmp exporter，这个并不是单一的目标，所以这些只能在一个vanilla/metrics调用上公开，而不是在特定目标上。
+通过直接的检测来判断你写的导出器是否是ok的。例如：总字节数在所有的数据抓取传输或者调用时由导出器执行，例如：blackbox exporters和snmp exporter，他们关联了多个目标实例，所以这些只能在一个vanilla`/metrics`调用上，而不是在特定目标上。
 
-#### 关于获取本身的度量指标
-有时，你可以导出获取的度量指标数据，例如：你花费了多长时间或处理了多少记录。
+#### 关于获取度量指标本身
+有时候你想要导出关于一次抓取本身相关的度量指标数据时，例如：这次抓取花费了多长时间，处理了多少记录。
 
-这些应该被显示为Gauges（因为它们是关于event，scrape）和以exporter名字为前缀的度量指标名称，例如：`jmx_scrape_duration_seconds`。通常`_exporter`被排除（如果exporter仅仅作为collector使用，绝对排除它）。
+这些数据的数据类型应该为gauges，数据指标名称以导出器名称为前缀，例如：`jmx_scrape_duration_seconds`。通常`_exporter`被排除（如果exporter仅仅作为collector使用，绝对排除它）。
 
-### Machine & Process metrics（机器，进程度量指标）
-许多系统（如：elasticsearch）暴露一些度量指标，如：cpu，内存和文件系统信息。当node exporter在Prometheus生态系统中提供了这些时，应该删除这些度量指标
+### Machine & Process metrics（硬件，进程度量指标）
+许多系统（如：elasticsearch）提供了一些硬件度量指标，如：cpu，内存和文件系统信息。Prometheus生态中的node导出器已经提供了这些度量指标的检测方案，所以不需要在写导出器时实现这些硬件度量指标的检测或者获取方案。
 
-在Java世界中，许多测量框架暴露了进程级别和JVM级别的统计信息，例如：CPU和GC。Java客户端和JMX exporter已经通过DefaultExports.java以首选方式包含了这些，因此这些应该被删除。
+在Java世界中，许多检测框架提供了进程级别和JVM级别的统计测量方案，例如：CPU占用率，GC次数等。Java客户端和JMX导出器已经通过形如[DefaultExports.java](https://github.com/prometheus/client_java/blob/master/simpleclient_hotspot/src/main/java/io/prometheus/client/hotspot/DefaultExports.java)的机制，可以获取这些度量指标，所以也不再需要在写导出器时再实现一套这样的方案。
 
 与其他语言类似。
 
 ### Deployment部署
-每个exporter应该准确地监控一个实例应用程序，最好是在同一台机器上。这意味着你运行的每个HAProxy，你运行一个haproxy_exporter进程。对于具有mesos从节点的每台机器，都可以在其上运行mesos exporter（如果一台机器有两台机器，则运行另一台主机）。
+每个导出器在实例所在的服务器上部署并监控，这意味着如果你想要haproxy，则需要在实例所在的服务器上运行`haproxy_exporter`导出器进程。对于每个有mesos从节点的服务器上，你需要在这个服务器上运行一个mesos导出器进程（如果在这台服务器上还有mesos主节点，则还需要再启动一个mesos导出器进程服务）
 
-这背后的理论是，对于测量系统来说，这是你正在做的，我们试图尽可能接近于其他布局。这意味着所有的服务发现都是在Prometheus而不是exporter完成的。这有利于Prometheus具有所需的目标信息，允许用户使用黑盒exporter探测你的服务。
+这背后的理论是，对于在所有实例上的导出器进程，我们需要获取其上的度量指标样本数据的话，这意味着在Prometheus监控系统上需要提供服务发现机制，而不是由导出器提供。Prometheus监控系统有目标实例的相关信息的优点，主要在于它允许用户用blackbox导出器探测你的服务。
 
 有两个例外：
 
-第一个实在应用程序旁边运行的见识是完全无意义的。SNMP，黑盒和IPMI是这一方的主要例子。IPMI和SNMP作为设备是有效的黑盒子，这是不可能运行代码（虽然如果你可以运行一个node exporter）和黑盒子，就像你正在监视像DNS名称这样没什么可以跑的在这种情况下，prometheus仍然应该做服务发现，并传递获取的目标。有关示例，请参阅blackbox和SNMP exporter）
+第一个是被监控的实例所在的服务器位置是完全不关心的。例如：SNMP、blackbox和IPMI。IPMI和SNMP作为设备是有效地黑盒，它是不可能运行代码的（如果你能够在其上运行node导出器代替，那会更好），blackbox作为你监控像DNS名称这样的，完全不需要运行代码）。但是Prometheus仍然应该需要做服务发现机制，通过传输被抓取的目标实例。
 
-请注意，目前只有使用python和Java客户端库编写这种类型的exporter（在Go中编写的blacxbox exporter手工执行文本格式，请不要这样做）。
+请注意，目前只有使用python和Java客户端库编写这种类型的exporter（在Go中编写的blackbox exporter手工执行文本格式，请不要这样做）。
 
-另一个是你从系统的随机实例中提取一些统计信息的地方，而不在乎您正在谈论哪一个。考虑一组MySQL从机，您希望对数据进行一些业务查询，然后导出。有一个exporter使用你通常的负载平衡方法来谈话
+第二个是，你从一个系统拉取一个随机服务实例的一些统计时，这个服务器的位置是你完全不关心的。考虑一种情况，你想要通过Mysql从节点运行一些商业查询，然后导出数据。这时候使用一个导出器和Mysql从节点通信是最佳方案。
 
-### ::TODO 有时间再翻译，想吐
+当你监控一个带有master选取的系统时，也不能用Prometheus服务发现机制。这种情况下，我们应该监控每个实例服务，并通过Prometheus和目标系统的主节点通信。这里并不总是准确的，改变目标实例也可能会在Prometheus监控系统下造成数据错乱。
+
+#### 调度
+当Prometheus服务抓取度量指标数据时，度量指标才能够从实例中被抓取。导出器不应该设定自己的时间去抓取目标数据，而是由Prometheus监控系统统一管理和下放。即所有的抓取是同步的。如果你需要时间戳，你可以通过pushgateway代替
+
+如果一个度量指标的数据获取需要花费大量时间和代价，那么暂时先缓存这些数据也是可以接受的。它应该在`HELP`中说明
+
+在Prometheus中默认的抓取度量指标数据的超时设置为10s。如果你的导出器超过了这个时间长度，你需要在你的导出器用户文档中明确指出。
+
+#### 推送
+一些应用程序和监控系统仅仅推送几个度量指标，如：statsd, grphite和collected.
+
+有两点需要考虑：
+第一点， 你的度量指标什么时间过期？Collected和Graphite导出器定时导出度量指标数据，但是当他们停止工作后，我们也想要停止提供这些度量指标。Collected包含我们经常使用的过期时间，而Graphite则不会，在导出器中它是一个标志。
+
+Statsd有很大不同，它处理的是事件，而不是度量指标。最好的数据模型是在服务所在的目标实例上运行一个Statsd导出器，当应用程序重启后，这个导出器也重启，并清空度量指标数据。
+
+第二点，这些应用程序和监控系统允许用户发送delta或者原生计数器。你应该尽可能地依赖原生计数器，这是Prometheus的通用模型。
+
+对于服务级别的度量指标（例如：服务级别的批量任务），你应该用导出器把这些度量指标数据推送到Push gateway中，当推送完成后退出。对于实例级别的度量指标，目前还没有明确的模式。选项不是滥用node导出器的textfile收集器，而是依赖当前内存状态。
+
+#### 抓取失败
+当前有两种模式，当导出器同实例服务通信没有响应或者其他问题时，称之为抓取失败。
+
+第一种，返回响应吗：5xx错误。
+
+第二种，有一个度量指标名称为`myexporter_up`(例如：`haproxy_up`), 判断一个导出器是否工作时通过这个度量指标变量的值0/1状态。0：表示不工作；1：表示工作。
+
+第二种模式是比较好的，当抓取失败时，我们能够通过一些有用的度量指标数据判断导出器服务的当前工作状态，例如：haproxy导出器提供了进程统计信息，第一种对于用户来说，更加容易处理，但是`up`是非常通用的处理方式（因为你不能辨别出事导出器服务有问题，还是应用程序有问题）
+
+#### 登录页面
+如果用户访问`http://yourexporter/`时返回一个带有导出器名称的简单页面， 并且通过`/metrics`链接到Prometheus系统中国，这对用户是非常友好的。
+
+#### 端口
+在一台服务器上用户可以有多个导出器和Prometheus组件，因此有一个唯一的端口变得非常容易
+
+[https://github.com/prometheus/prometheus/wiki/Default-port-allocations ](https://github.com/prometheus/prometheus/wiki/Default-port-allocations)， 这个是我们官方的端口规划。
+
+
+### 宣布
+一旦你对外准备宣布你写的导出器时，请发送一封邮件，并且发送一个PR到这个可用导出器的[列表](https://github.com/prometheus/docs/blob/master/content/docs/instrumenting/exporters.md)
