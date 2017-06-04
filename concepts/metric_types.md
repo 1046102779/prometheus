@@ -3,7 +3,7 @@
 Prometheus客户库提供了四个核心的metrics类型。这四种类型目前仅在客户库和wire协议中区分。Prometheus服务还没有充分利用这些类型。不久的将来就会发生改变。
 
 ### Counter(计数器)
-*counter* 是一个累计度量指标，它仅仅是永远递增的数值。计数器主要用于统计服务的请求数、任务完成数和错误出现的次数等等。计数器是一个递增的值。反例：统计goroutines的数量。计数器的使用方式在下面的各个客户端例子中：
+*counter* 是一个累计度量指标，它是一个只能递增的数值。计数器主要用于统计服务的请求数、任务完成数和错误出现的次数等等。计数器是一个递增的值。反例：统计goroutines的数量。计数器的使用方式在下面的各个客户端例子中：
 
 客户端使用计数器的文档：
  - [Go](http://godoc.org/github.com/prometheus/client_golang/prometheus#Counter)
@@ -12,7 +12,7 @@ Prometheus客户库提供了四个核心的metrics类型。这四种类型目前
  - [Ruby](https://github.com/prometheus/client_ruby#counter)
 
 ### Gauge(计量器)
-*gauge*是一个度量指标，它表示一个既可以递增或者递减的值。
+*gauge*是一个度量指标，它表示一个既可以递增, 又可以递减的值。
 
 计量器主要用在类似于温度、当前内存使用量等，也可以统计当前服务运行随时增加或者减少的Goroutines数量
 
@@ -26,7 +26,7 @@ Prometheus客户库提供了四个核心的metrics类型。这四种类型目前
 *histogram*对观察结果(通常是请求持续时间或者响应大小)进行采样，并在可配置的桶中对其进行统计。它还提供所有观察值的总和
 
 带有度量指标名称为`[basename]`的histogram会展示Prometheus服务抓取的时间序列数据
- - [base]_bucket{le="<upper inclusive bound"}, 是指观察buckets的累计计数器
+ - [basename]_bucket{le="<upper inclusive bound"}, 是指观察buckets的累计计数器
  - [basename]_sum, 是指观察值总和
  - [basename]_count,是指已经观察到的事件总计数
 
