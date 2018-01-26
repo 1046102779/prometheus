@@ -29,13 +29,13 @@ Prometheus客户库提供了四个核心的metrics类型。这四种类型目前
  3. 对采样点的次数累计和(count)
 
 度量指标名称: `[basename]`的柱状图, 上面三类的作用度量指标名称
- - [basename]_bucket{le="上边界"}
+ - [basename]_bucket{le="上边界"}, 这个值为小于等于上边界的所有采样点数量
  - [basename]_sum
  - [basename]_count
 
 小结：所以如果定义一个度量类型为Histogram，则Prometheus系统会自动生成三个对应的指标
 
-*histogram的最简单的理解, [DEMO](histogram.go)*
+**histogram的最简单的理解, [DEMO](histogram.go)*
 
 使用[histogram_quantile()](https://prometheus.io/docs/querying/functions/#histogram_quantile)函数, 计算直方图或者是直方图聚合计算的分位数阈值。 一个直方图计算[Apdex值](http://en.wikipedia.org/wiki/Apdex)也是合适的, 当在buckets上操作时，记住直方图是累计的。详见[直方图和总结](https://prometheus.io/docs/practices/histograms)
 
@@ -46,32 +46,18 @@ Prometheus客户库提供了四个核心的metrics类型。这四种类型目前
  - [Ruby](https://github.com/prometheus/client_ruby#histogram)
 
 ### [Summary]总结
-类似*histogram*，*summary*观察样本值(使用场景类似：请求持续时间和响应大小)。它也提供观察的总计数和所有观察值的总和。同时它可以在滑动时间窗口上计算可配置的分位数。
+类似*histogram*柱状图，*summary*是采样点分位图统计，(通常的使用场景：请求持续时间和响应大小)。 它也有三种作用：
+ 1. 对于每个采样点进行统计，并形成分位图。（如：正态分布一样，统计低于60分不及格的同学比例，统计低于80分的同学比例，统计低于95分的同学比例）
+ 2. 统计班上所有同学的总成绩(sum)
+ 3. 统计班上同学的考试总人数(count)
 
 带有度量指标的`[basename]`的`summary` 在抓取时间序列数据展示。
  - 观察时间的φ-quantiles (0 ≤ φ ≤ 1), 显示为`[basename]{分位数="[φ]"}`
  - `[basename]_sum`， 是指所有观察值的总和
  - `[basename]_count`, 是指已观察到的事件计数值
 
-`summaries理解`:  分位数分别是0.5,  0.9,  0.99
- ```
-summary: <
-  sample_count: 1000
-  sample_sum: 29969.50000000001
-  quantile: <
-    quantile: 0.5
-    value: 31.1
-  >
-  quantile: <
-    quantile: 0.9
-    value: 41.3
-  >
-  quantile: <
-    quantile: 0.99
-    value: 41.9
-  >
->
- ```
+**summary的最简单的理解, [DEMO](summary.go)*
+
 
 详见[histogram和summaries](https://prometheus.io/docs/practices/histograms)
 
