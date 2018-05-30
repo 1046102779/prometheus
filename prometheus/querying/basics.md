@@ -86,7 +86,7 @@ PromQL遵循与Go相同的转义规则。在单引号，双引号中，反斜杠
 > http_requests_total offset 5m
 
 注意：`offset`偏移修饰符必须直接跟在选择器后面，例如：
-> sum(http_requests_total{method="GET"} offset 5m} // GOOD.
+> sum(http_requests_total{method="GET"} offset 5m) // GOOD.
 
 然而，下面这种情况是不正确的
 >  sum(http_requests_total{method="GET"}) offset 5m // INVALID.
