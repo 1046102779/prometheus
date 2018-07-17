@@ -14,13 +14,13 @@
 ```
 rate(http_request_duration_seconds_sum[5m]) 
 /
-rate(http_request_duration_seconds_count[5])
+rate(http_request_duration_seconds_count[5m])
 ```
 
 ### Apdex score 应用性能指数
 直方图的直接使用（不是汇总）是对落在特定观测值中的统计计数。
 
-你可以有一个SLA去300ms内的95%服务请求。例如：在这种情况下，请配置直方图到上限为0.3s。然后你可以直接在300s内表达所请求的相对数量，并且如果只低于0.95，则可以轻松发出警报。以下表达式将按照过去5分钟内提供的请求的作业计算。使用成为`http_request_duration_seconds`的直方图收集请求持续时间。
+你可以有一个SLA去300ms内的95%服务请求。例如：在这种情况下，请配置直方图到上限为0.3s。然后你可以直接在300ms内表达所请求的相对数量，并且如果只低于0.95，则可以轻松发出警报。以下表达式将按照过去5分钟内提供的请求的作业计算。使用成为`http_request_duration_seconds`的直方图收集请求持续时间。
 ```
 sum(rate(http_request_duration_seconds_bucket{le="0.3"}[5])) by (job)
 /
