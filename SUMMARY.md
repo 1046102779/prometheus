@@ -19,6 +19,7 @@
         * [举例](prometheus/querying/query_examples.md)
         * [记录规则](prometheus/querying/recording_rules.md)
         * [HttpAPI访问](prometheus/querying/http_api.md)
+    - [启动](prometheus/geting_started.md)
 * [可视化](virsualization)
     - [表达式浏览器](virsualization/expression_browser.md)
     - [Grafana](virsualization/grafana.md)
