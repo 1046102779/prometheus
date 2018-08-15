@@ -2,7 +2,7 @@
 
 电子书地址: 
 
-1. [看云地址](https://www.kancloud.cn/cdh0805010118/prometheus/719340)
+1. [看云地址](https://www.kancloud.cn/cdh0805010118/prometheus)
 
 2. [love2.io](https://love2.io/@1046102779/doc/prometheus/introductions/overview.md)
 
