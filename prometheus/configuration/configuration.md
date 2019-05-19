@@ -2,10 +2,10 @@ Prometheus通过命令行标志和配置文件进行配置。 虽然命令行标
 
 要查看所有可用的命令行参数，执行`./prometheus -h`
 
-Prometheus可以在运行时重新加载其配置。 如果新配置格式不正确，则不会应用更改。 通过向Prometheus进程发送SIGHUP或向/  -  / reload端点发送HTTP POST请求（启用--web.enable-lifecycle标志时）来触发配置重新加载。 这也将重新加载任何已配置的规则文件。
+Prometheus可以在运行时重新加载其配置。 如果新配置格式不正确，则不会应用更改。 通过向Prometheus进程发送SIGHUP或向`/-/reload`端点发送HTTP POST请求（启用`--web.enable-lifecycle`标志时）来触发配置重新加载。 这也将重新加载任何已配置的规则文件。
 
 ##### 一、配置文件
-要指定要加载的配置文件，请使用--config.file标志。
+要指定要加载的配置文件，请使用`--config.file`标志。
 
 该文件以YAML格式编写，由下面描述的方案定义。 括号表示参数是可选的。 对于非列表参数，该值设置为指定的默认值。
 
@@ -75,7 +75,7 @@ remote_read:
 
 此外，`<relabel_configs>`允许在抓取之前对任何目标及其标签进行高级修改。
 
-==其中<job_name>在所有scrape配置中必须是唯一的。==
+其中`<job_name>`在所有scrape配置中必须是唯一的。
 ```
 # 默认分配给已抓取指标的job名称。
 job_name: <job_name>
@@ -209,11 +209,11 @@ metric_relabel_configs:
 ```
 
 ###### 1.3 `<dns_sd_config>`
-基于DNS的服务发现配置允许指定一组DNS域名，这些域名会定期查询以发现目标列表。 要联系的DNS服务器从/etc/resolv.conf中读取。
+基于DNS的服务发现配置允许指定一组DNS域名，这些域名会定期查询以发现目标列表。 要联系的DNS服务器从`/etc/resolv.conf`中读取。
 
 此服务发现方法仅支持基本的DNS A，AAAA和SRV记录查询，但不支持RFC6763中指定的高级DNS-SD方法。
 
-在重新标记阶段，元标签__meta_dns_name在每个目标上可用，并设置为生成已发现目标的记录名称。
+在重新标记阶段，元标签`__meta_dns_name`在每个目标上可用，并设置为生成已发现目标的记录名称。
 ```
 # 要查询的DNS域名列表。
 names:
