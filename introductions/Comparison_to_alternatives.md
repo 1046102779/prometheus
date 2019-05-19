@@ -47,7 +47,7 @@ InfluxDB使用变种的日志结构合并树结构来存储预写日志，并按
 [Logs and Metrics and Graphs, Oh My](https://blog.raintank.io/logs-and-metrics-and-graphs-oh-my)描述了事件日志和度量指标记录的不同
 
 ###### 2.3 框架
-Prometheus服务独立运行，没有集群架构，它仅仅依赖于本地存储。Prometheus有四个核心的功能：抓取、规则处理和警告。InfluxDB的开源版本也是类似的。
+Prometheus服务器彼此独立运行，其核心功能仅依赖于本地存储：抓取、规则处理和警报。influxDB的开源版本类似。
 
 InfluxDB的商业版本具有存储和查询的分布式版本,存储和查询由集群中的节点同时处理。
 
