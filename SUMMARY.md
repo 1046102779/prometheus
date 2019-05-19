@@ -1,7 +1,7 @@
 * [介绍](introductions/README.md)
     - [总览](introductions/Overview.md)
     - [开始](introductions/FirstSteps.md)
-    - [对比](introductions/comparison.md)
+    - [对比](introductions/Comparison_to_alternatives.md)
     - [常见问题](introductions/questions.md)
     - [路线图](introductions/roadmap.md)
     - [学习媒介](introductions/media.md)
