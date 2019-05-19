@@ -40,7 +40,7 @@ scrape_configs:
 
 rule_files块指定我们希望Prometheus服务器加载的任何规则的位置。 现在我们没有规则。
 
-最后一个块scrape_configs控制Prometheus监视的资源。 由于Prometheus还将自己的数据公开为HTTP端点，因此它可以抓取并监控自身的健康状况。 在默认配置中，有一个名为prometheus的作业，它会抓取Prometheus服务器公开的时间序列数据。 该作业包含一个静态配置的目标，即端口9090上的localhost。Prometheus希望指标在/metrics路径上的目标上可用。 所以这个默认的工作是通过URL抓取：[http//localhost9090/metrics](http//localhost9090/metrics)。
+最后一个块scrape_configs控制Prometheus监视的资源。 由于Prometheus还将自己的数据公开为HTTP端点，因此它可以抓取并监控自身的健康状况。 在默认配置中，有一个名为prometheus的作业，它会抓取Prometheus服务器公开的时间序列数据。 该作业包含一个静态配置的目标，即端口9090上的localhost。Prometheus希望指标在/metrics路径上的目标上可用。 所以这个默认的工作是通过URL抓取：[http//localhost:9090/metrics](http//localhost:9090/metrics)。
 
 返回的时间序列数据将详细说明Prometheus服务器的状态和性能。
 
@@ -51,18 +51,18 @@ rule_files块指定我们希望Prometheus服务器加载的任何规则的位置
 ```
 ./prometheus --config.file=prometheus.yml
 ```
-prometheus应该启动。您还应该能够在[http//localhost9090](http//localhost9090)浏览到自己的状态页面。给它大约30秒的时间从自己的HTTP指标端点收集有关自己的数据。
+prometheus应该启动。您还应该能够在[http//localhost:9090](http//localhost:9090)浏览到自己的状态页面。给它大约30秒的时间从自己的HTTP指标端点收集有关自己的数据。
 
-您还可以通过导航到其自己的指标端点来验证Prometheus是否正在提供有关自身的指标：[http//localhost9090/metrics](http//localhost9090/metrics)。
+您还可以通过导航到其自己的指标端点来验证Prometheus是否正在提供有关自身的指标：[http//localhost:9090/metrics](http//localhost:9090/metrics)。
 
 ##### 四、使用表达式浏览器
-让我们试着看一下Prometheus收集的关于自己的一些数据。 要使用Prometheus的内置表达式浏览器，请导航到[http//localhost9090/graph](http//localhost9090/graph)并在“Graph”选项卡中选择“Console”视图。
+让我们试着看一下Prometheus收集的关于自己的一些数据。 要使用Prometheus的内置表达式浏览器，请导航到[http//localhost:9090/graph](http//localhost:9090/graph)并在“Graph”选项卡中选择“Console”视图。
 
-正如您可以从[http//localhost9090/metrics](http//localhost9090/metrics)收集的那样，Prometheus导出的一个度量标准称为promhttp_metric_handler_requests_total（Prometheus服务器已服务的/ metrics请求的总数）。 继续并将其输入表达式控制台：
+正如您可以从[http//localhost：9090/metrics](http//localhost：9090/metrics)收集的那样，Prometheus导出的一个度量标准称为`promhttp_metric_handler_requests_total`（Prometheus服务器已服务的/ metrics请求的总数）。 继续并将其输入表达式控制台：
 ```
 promhttp_metric_handler_requests_total
 ```
-这应该返回许多不同的时间序列（以及为每个记录的最新值），所有时间序列都使用度量标准名称promhttp_metric_handler_requests_total，但具有不同的标签。 这些标签指定不同的请求状态。
+这应该返回许多不同的时间序列（以及为每个记录的最新值），所有时间序列都使用度量标准名称`promhttp_metric_handler_requests_total`，但具有不同的标签。 这些标签指定不同的请求状态。
 
 如果我们只对导致HTTP代码200的请求感兴趣，我们可以使用此查询来检索该信息：
 ```
@@ -75,7 +75,7 @@ count(promhttp_metric_handler_requests_total)
 有关表达式语言的更多信息，请参阅[表达式语言文档](https://prometheus.io/docs/prometheus/latest/querying/basics/)。
 
 ##### 五、适用图表接口
-要绘制表达式图表，请导航到[http//localhost9090/graph](http//localhost9090/mgraph) graph并使用“图表”选项卡。
+要绘制表达式图表，请导航到[http//localhost:9090/graph](http//localhost:9090/mgraph) graph并使用“图表”选项卡。
 
 例如，输入以下表达式来绘制在自我抓取的Prometheus中发生的返回状态代码200的每秒HTTP请求率：
 ```
