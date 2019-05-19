@@ -1,7 +1,6 @@
 * [介绍](introductions/README.md)
     - [总览](introductions/Overview.md)
-    - [安装](introductions/install.md)
-    - [启动](introductions/get_started.md)
+    - [开始](introductions/FirstSteps.md)
     - [对比](introductions/comparison.md)
     - [常见问题](introductions/questions.md)
     - [路线图](introductions/roadmap.md)
