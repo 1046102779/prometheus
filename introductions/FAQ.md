@@ -27,7 +27,7 @@
  - 如果目标实例挂掉，你可以很容易地知道
  - 你可以手动指定一个目标，并通过浏览器检查该目标实例的监控状况
 
-总体来说，我们相信拉模式比推模式要好一地啊你，但是当考虑一个监控系统时，它不是主要的考虑点
+总体来说，我们相信pull模式比push模式要好一些，但是当考虑一个监控系统时，它不是主要的考虑点
 [Push vs. Pull](http://www.boxever.com/push-vs-pull-for-monitoring)监控在Brian Brazil的博客中被详细的描述
 
 如果你必须要用Push模式，我们提供[Pushgateway](https://prometheus.io/docs/instrumenting/pushing/)
@@ -73,7 +73,7 @@ etheus.io/docs/visualization/consoles/)也可以
 ##### 二、仪表
 
 ###### 1. 哪些语言有工具库？
-> 这里有很多客户端库，用Prometheus的度量指标度量你的服务。详见[客户库](https://prometheus.io/docs/instrumenting/clientlibs/)
+> 这里有很多客户端库，用Prometheus的度量指标度量你的服务。详见[client库](https://prometheus.io/docs/instrumenting/clientlibs/)
 > 如果你对功能工具库非常感兴趣，详见[exposition formats](https://prometheus.io/docs/instrumenting/exposition_formats/)
 
 ###### 2. 我能监控机器吗？
@@ -97,7 +97,7 @@ etheus.io/docs/visualization/consoles/)也可以
 ##### 三、故障排除
 
 ###### 1. 我的Prometheus 1.x服务器需要很长时间才能启动并使用有关崩溃恢复的大量信息来保存日志。。
-> 你的服务可能遭到了不干净的关闭。Prometheus必须在SIGTERM后彻底关闭，特别地对于一些重量级服务可能需要比较长的时间去。如果服务器崩溃或者司机（如：在等待Prometheus关闭时，内核的OOM杀死你的Promethe
+> 你的服务可能遭到了不干净的关闭。Prometheus必须在SIGTERM后彻底关闭，特别地对于一些重量级服务可能需要比较长的时间去。如果服务器崩溃或者强制杀死（如：在等待Prometheus关闭时，内核的OOM杀死你的Promethe
 us服务），必须执行崩溃恢复，这在正常情况下需要不到一分钟。详见[崩溃恢复](https://prometheus.io/docs/operating/storage/#crash-recovery)
 
 ###### 2. 我的Prometheus 1.x服务器内存不足。
