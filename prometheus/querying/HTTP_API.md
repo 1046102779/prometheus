@@ -13,7 +13,7 @@
 如果存在不阻止请求执行的错误，则可以返回警告数组。 成功收集的所有数据都将在数据字段中返回。
 
 JSON响应信封格式如下：
-```JSON
+```
 {
   "status": "success" | "error",
   "data": <data>,
@@ -54,7 +54,7 @@ URL查询参数：
 如果`time`缺省，则用当前服务器时间表示执行时刻。
 
 这个查询结果的`data`部分有下面格式：
-```JSON
+```
 {
  "resultType": "matrix" | "vector" | "scalar" | "string",
  "result": <value>
@@ -106,7 +106,7 @@ URL查询参数
 
 
 查询结果的数据部分具有以下格式：
-```json
+```
 {
     "resultType": "matrix",
     "result": <value>
@@ -116,7 +116,7 @@ URL查询参数
 对于`<value>`占位符的格式，详见[范围向量结果格式](https://prometheus.io/docs/querying/api/#range-vectors)。
 
 以下示例在30秒范围内评估表达式，查询分辨率为15秒。
-```JSON
+```
 $ curl 'http://localhost:9090/api/v1/query_range?query=up&start=2015-07-01T20:10:30.781Z&end=2015-07-01T20:11:00.781Z&step=15s'
 {
    "status" : "success",
@@ -165,7 +165,7 @@ URL查询参数：
 查询结果的`data`部分包含一个对象列表，这些对象包含标识每个系列的标签名称/值对。
 
 下面这个例子返回时间序列数据, 选择器是`up`或者`process_start_time_seconds{job="prometheus"}`
-```JSON
+```
 $ curl -g 'http://localhost:9090/api/v1/series?match[]=up&match[]=process_start_time_seconds{job="prometheus"}'
 {
    "status" : "success",
@@ -196,7 +196,7 @@ $ curl -g 'http://localhost:9090/api/v1/series?match[]=up&match[]=process_start_
 JSON响应的`data`部分是字符串标签名称的列表。
 
 这是一个例子。
-```JSON
+```
 $ curl http://localhost:9090/api/v1/label/job/values
 {
    "status" : "success",
@@ -213,7 +213,7 @@ $ curl http://localhost:9090/api/v1/label/job/values
 JSON响应的`data`部分是字符串标签值的列表。
 
 此示例查询作业标签的所有标签值：
-```JSON
+```
 $ curl http://localhost:9090/api/v1/label/job/values
 {
    "status" : "success",
@@ -229,7 +229,7 @@ $ curl http://localhost:9090/api/v1/label/job/values
 
 ###### 4.1 范围向量
 范围向量返回的result类型是一个`matrix`矩阵。下面返回的结果是`result`部分的数据格式：
-```JSON
+```
 [
   {
     "metric": { "<label_name>": "<label_value>", ... },
@@ -241,7 +241,7 @@ $ curl http://localhost:9090/api/v1/label/job/values
 
 ###### 4.2 瞬时向量
 瞬时向量的`result`类型是`vector`。下面是`result`部分的数据格式
-```JSON
+```
 [
   {
     "metric": { "<label_name>": "<label_value>", ... },
@@ -395,7 +395,7 @@ URL查询参数：
 查询结果的`data`部分包含一个包含度量元数据和目标标签集的对象列表。
 
 以下示例从前两个目标返回`go_goroutines`指标的所有元数据条目，标签为`job ="prometheus"`。
-```JSON
+```
 curl -G http://localhost:9091/api/v1/targets/metadata \
     --data-urlencode 'metric=go_goroutines' \
     --data-urlencode 'match_target={job="prometheus"}' \
@@ -425,7 +425,7 @@ curl -G http://localhost:9091/api/v1/targets/metadata \
 }
 ```
 以下示例返回标签`instance="127.0.0.1:9090"`的所有目标的所有度量标准的元数据。
-```JSON
+```
 curl -G http://localhost:9091/api/v1/targets/metadata \
     --data-urlencode 'match_target={instance="127.0.0.1:9090"}'
 {
@@ -461,7 +461,7 @@ curl -G http://localhost:9091/api/v1/targets/metadata \
 > GET /api/v1/alertmanagers
 
 活动和丢弃的Alertmanagers都是响应的一部分。
-```JSON
+```
 $ curl http://localhost:9090/api/v1/alertmanagers
 {
   "status": "success",
@@ -488,7 +488,7 @@ $ curl http://localhost:9090/api/v1/alertmanagers
 > GET /api/v1/status/config
 
 配置作为转储的YAML文件返回。 由于YAML库的限制，不包括YAML注释。
-```JSON
+```
 $ curl http://localhost:9090/api/v1/status/config
 {
   "status": "success",
@@ -502,7 +502,7 @@ $ curl http://localhost:9090/api/v1/status/config
 > GET /api/v1/status/flags
 
 所有值都以“字符串”的形式出现。
-```JSON
+```
 $ curl http://localhost:9090/api/v1/status/flags
 {
   "status": "success",

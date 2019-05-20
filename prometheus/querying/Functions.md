@@ -1,4 +1,4 @@
-一些函数有默认的参数，例如：`year(v=vector(time()) instant-vector)`。他的意思是有一个参数`v`是一个即时向量，如果没有提供，它将默认为表达式`vector(time())`的值。
+一些函数有默认的参数，例如：`year(v=vector(time()) instant-vector)`。他的意思是有一个参数`v`是一个瞬时向量，如果没有提供，它将默认为表达式`vector(time())`的值。
 
 ###### 一、abs()
 `abs(v instant-vector)`返回输入向量，所有样本值都转换为其绝对值。

@@ -3,7 +3,7 @@
 > http_requests_total
 
 使用度量标准`http_requests_total`以及给定的`job`和`handler`标签返回所有时间系列：
-> http_requests_total{job="apiserver", hanlder="/api/comments"}
+> http_requests_total{job="apiserver", handler="/api/comments"}
 
 返回相同向量的整个时间范围（在本例中为5分钟），使其成为范围向量：
 > http_requests_total{job="apiserver", handler="/api/comments"}[5m]
