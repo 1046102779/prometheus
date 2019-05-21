@@ -6,17 +6,6 @@
 ##### 一、Grafan安装
 Grafana的完整安装教程，详见[Grafana官方文档](http://docs.grafana.org/installation/)
 
-例如，在Linux上，安装Grafana可能如下所示：
-```Grafana install
-# Download and unpack Grafana from binary tar (adjust version as appropriate).
-curl -L -O https://grafanarel.s3.amazonaws.com/builds/grafana-2.5.0.linux-x64.tar.gz
-tar zxf grafana-2.5.0.linux-x64.tar.gz
-
-# Start Grafana.
-cd grafana-2.5.0/
-./bin/grafana-server web
-```
-
 ##### 二、使用方法
 默认情况下，Grafana将监听[http://localhost:3000](http://localhost:3000)。默认登录用户名和密码“admin/admin”。
 

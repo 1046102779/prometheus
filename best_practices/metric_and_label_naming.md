@@ -4,8 +4,9 @@
 
 ### 度量指标名称
 一个度量指标名称...
- - ... 应该有一个与单位所属的域相关的（单个单词）应用程序前缀。前缀有时成为客户端库的命名空间。对于特定于应用程序的度量指标，前缀通常是应用程序名称本身。然而，有时候，指标更为通用，如客户端导出的标准化指标。例子：
 
+- ... 必须遵守有效字符的[数据模型](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels)。 
+- ... 应该有一个与单位所属的域相关的（单个单词）应用程序前缀。前缀有时成为客户端库的命名空间。对于特定于应用程序的度量指标，前缀通常是应用程序名称本身。然而，有时候，指标更为通用，如客户端导出的标准化指标。例子：
      - `prometheus_notifications_total`(指定Prometheus服务)
      - `process_cpu_seconds_total`(由许多客户库导出)
      - `http_request_duration_seconds`(所有HTTP请求)
@@ -25,9 +26,26 @@
 
 ### 标签
 使用标签来区分正在测量的事物特征：
- - `api_http_requests_total`- 区分请求类型： `type="created| update | delete`.
- - `api_request_duration_seconds`- 区分请求阶段：`stage="extract | transform | load"` 
+
+- `api_http_requests_total`- 区分请求类型： `type="created| update | delete`.
+- `api_request_duration_seconds`- 区分请求阶段：`stage="extract | transform | load"` 
 
 不要将标签名称放在度量指标名称下面，因为这会导致冗余，如果响应的标签被聚合，会导致混淆。
 
 谨慎：请记住，键值标签对的每个独特组合都代表了一个新的时间序列，可以显着增加存储的数据量。 不要使用标签来存储具有高基数（许多不同标签值）的维度，例如用户ID，电子邮件地址或其他无限制的值集合。
+
+### 基本单位
+普罗米修斯没有硬编码的任何单位。 为了更好的兼容性，应使用基本单元。 以下列出了一些具有基本单位的度量标准系列。 该清单并非详尽无遗。
+
+|Family|基本单位 | 备注|
+|---|---|---|
+|Time | seconds |  | 
+| Temperature | celsius | 摄氏度是实践中遇到的最常见的摄氏度 | 
+| Length | meters | |
+| Bytes | bytes | |
+| Bits | bytes | | 
+| Percent | ratio(*) | 值为0-1。`*`）通常'ratio'不用作后缀，而是用作A_per_B。 例外是例如disk_usage_ratio | 
+| Voltage | volts | |
+| Electric current | amperes | |
+| Energy | joules | | 
+| Weight | grams | | 

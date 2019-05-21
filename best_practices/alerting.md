@@ -1,13 +1,13 @@
 ## Alerting
 ---
-我们建议您根据Rob Ewaschuk在Google上的观察，阅读我的“基于警报的哲学”。
+我们建议您根据Rob Ewaschuk在Google上的观察，阅读我的[基于警报的哲学](https://docs.google.com/document/d/199PqyG3UsyXlwieHaqbGiWVa8eMWi8zzAn0YfcApr8Q/edit)。
 
 总结：保持警报简单，警惕症状，有良好的控制台允许精确定位原因，并避免有页面无关。
 
 ### What to alert on
 旨在尽可能少的警报，通过警告与最终用户疼痛相关的症状，而不是试图捕捉可能导致疼痛的每一种可能的方式。 警报应该链接到相关的控制台，并且很容易找出哪个组件有故障。
 
-允许松动的警报以适应小的蓝牙。
+允许松动的警报以适应小的光点。
 
 #### 在线服务系统
 

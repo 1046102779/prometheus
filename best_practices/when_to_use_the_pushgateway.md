@@ -1,6 +1,6 @@
 ## WHEN TO USE THE PUSHGATEWAY
 ---
-Pushgateway是一个中介服务，允许您从不能被刮除的作业推出指标。 有关详细信息，请参阅推送指标。
+Pushgateway是一个中介服务，允许您从不能被刮除的作业推出指标。 有关详细信息，请参阅[推送指标](https://prometheus.io/docs/instrumenting/pushing/)。
 
 ### 我应该用Pushgateway吗？
 在某些有限的情况下，我们只推荐使用Pushgateway。 盲目使用Pushgateway而不是普罗米修斯通常采用拉普模式进行一般指标收集时有几个陷阱：
