@@ -55,7 +55,7 @@
 * [最佳实践](best_practices/README.md)
     - [指标和标签命名](best_practices/Metric_and_label_naming.md)
     - [instrumentation](best_practices/instrumentation.md)
-    - [控制台和面板](best_practices/consoles_and_dashboards.md)
+    - [控制台和面板](best_practices/Consoles_and_dashboards.md)
     - [直方图和summaries](best_practices/histograms_and_summaries.md)
     - [预警](best_practices/alerting.md)
     - [什么时候使用Pushgateway](best_practices/when_to_use_the_pushgateway.md)
