@@ -57,5 +57,6 @@
     - [控制台和面板](best_practices/Consoles_and_dashboards.md)
     - [instrumentation](best_practices/Instrumentation.md)
     - [直方图和summaries](best_practices/Histograms_and_summaries.md)
-    - [预警](best_practices/alerting.md)
-    - [什么时候使用Pushgateway](best_practices/when_to_use_the_pushgateway.md)
+    - [预警](best_practices/Alerting.md)
+    - [录制规则](best_practices/Recording_rules.md)
+    - [什么时候使用Pushgateway](best_practices/When_to_use_the_pushgateway.md)
