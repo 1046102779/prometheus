@@ -1,4 +1,4 @@
-欢迎来到Prometheus！Prometheus是一个监控平台，通过在监控目标目标上的HTTP端点来收集受监控目标的指标。本指南将向您展示如何使用Prometheus安装，配置和监控我们的第一个资源。 您将下载，安装并运行Prometheus。您还将下载并安装exporter，这些工具可在主机和服务上公开时间序列数据。我们的第一个exporter将是Prometheus本身，它提供了有关内存使用，垃圾收集等的各种主机级指标。
+欢迎来到Prometheus！Prometheus是一个监控平台，通过在监控目标上的HTTP端点来收集受监控目标的指标。本指南将向您展示如何使用Prometheus安装，配置和监控我们的第一个资源。 您将下载，安装并运行Prometheus。您还将下载并安装exporter，这些工具可在主机和服务上公开时间序列数据。我们的第一个exporter将是Prometheus本身，它提供了有关内存使用，垃圾收集等的各种主机级指标。
 
 ##### 一、下载Prometheus
 根据你的平台[https://prometheus.io/download/](https://note.youdao.com/)，然后解压它:
@@ -6,7 +6,7 @@
 tar xvfz prometheus-*.tar.gz
 cd prometheus-*
 ```
-Prometheus服务器是一个名为prometheus的二进制文件（或Microsoft Windows上的prometheus.exe）。 我们可以通过传递--help标志来运行二进制文件并查看其选项的帮助。
+Prometheus服务器是一个名为prometheus的二进制文件（或Microsoft Windows上的prometheus.exe）。 我们可以通过传递`--help`标志来运行二进制文件并查看其选项的帮助。
 ```
 ./prometheus --help
 usage: prometheus [<flags>]
@@ -36,7 +36,7 @@ scrape_configs:
 ```
 示例配置文件中有三个配置块：global，rule_files和scrape_configs。
 
-全局块控制Prometheus服务器的全局配置。 我们有两种选择。 第一个是scrape_interval，它控制Prometheus抓取目标的频率。 您可以为单个目标重写此值。 在这种例子下，全局设置是每15抓取一次。 evaluation_interval选项控制Prometheus评估规则的频率。 Prometheus使用规则创建新的时间序列并生成警报。
+全局块控制Prometheus服务器的全局配置。 我们有两种选择。 第一个是scrape_interval，它控制Prometheus抓取目标的频率。 您可以为单个目标重写此值。 在这种例子下，全局设置是每15s抓取一次。 evaluation_interval选项控制Prometheus评估规则的频率。 Prometheus使用规则创建新的时间序列并生成警报。
 
 rule_files块指定我们希望Prometheus服务器加载的任何规则的位置。 现在我们没有规则。
 

@@ -1,5 +1,5 @@
 
-语言模板](http://golang.org/pkg/text/template/)创建任意的console。这些由Prometheus服务提供。
+[语言模板](http://golang.org/pkg/text/template/)创建任意的console。这些由Prometheus服务提供。
 
 控制台模板是创建可在源代码管理中轻松管理的模板的最强大方法。 虽然有一个学习曲线，所以对这种监控方式不熟悉的用户应首先尝试Grafana。
 
