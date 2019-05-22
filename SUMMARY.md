@@ -53,7 +53,7 @@
     - [通知模板参考](alerting/Notification_template_reference.md)
     - [通知模板例子](alerting/Notification_template_example.md)
 * [最佳实践](best_practices/README.md)
-    - [指标和标签命名](best_practices/metric_and_label_naming.md)
+    - [指标和标签命名](best_practices/Metric_and_label_naming.md)
     - [instrumentation](best_practices/instrumentation.md)
     - [控制台和面板](best_practices/consoles_and_dashboards.md)
     - [直方图和summaries](best_practices/histograms_and_summaries.md)
