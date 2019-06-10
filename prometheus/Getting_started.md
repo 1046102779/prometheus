@@ -1,14 +1,14 @@
 本教程是类似"hello,world"的教程，展示怎样在一个简单地例子中安装、配置和使用Prometheus。你将下载和本地化运行Prometheus服务，并写一个配置文件，监控Prometheus服务本身和一个简单的应用，然后配合使用query、rules和graphs展示收集的时间序列数据。
 
-##### 一、下载和运行Prometheus
-[现在Prometheus最新的发布版本](https://prometheus.io/download),然后提取和运行它：
+### 下载和运行Prometheus
+[下载Prometheus最新的发布版本](https://prometheus.io/download),然后提取和运行它：
 ```shell
 tar zxvf prometheus-*.tar.gz
 cd prometheus-*
 ```
 在开始启动Prometheus之前，我们要配置它
 
-##### 二、配置Prometheus监控自身
+### 配置Prometheus监控自身
 Prometheus从监控的目标上通过http方式拉取指标数据,它也可以拉取自身服务数据并监控自身的健康状况。
 
 当然Prometheus服务拉取自身服务数据，并没有多大的用处，但是它是一个好的开始例子。保存下面的基本Prometheus配置，并命名为：`prometheus.yml`:
@@ -34,7 +34,7 @@ scrape_configs:
 
 对于一个完整的配置选项，请见[配置文档](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
 
-##### 三、启动Prometheus
+### 启动Prometheus
 要使用新创建的配置文件启动Prometheus，请切换到包含Prometheus二进制文件的目录并运行：
 ```shell
 ./prometheus --config.file=prometheus.yml
@@ -43,7 +43,7 @@ Prometheus服务应该启动了。你可以在浏览器上输入：`http://local
 
 您还可以通过导航到其指标端点来验证Prometheus是否正在提供有关自身的指标：`http://localhost:9090/metrics`
 
-##### 四、使用expression browser
+### 使用expression browser
 让我们试着看一下Prometheus收集的关于自己的一些数据。 使用Prometheus的内置表达式浏览器，导航到`http://localhost:9090/graph`，并选择带有"Graph"的"Console".
 
 在`http://localhost:9090/gmetrics`中收集中，有一个metric叫`prometheus_target_interval_length_seconds`(从目标收集数据的实际时间量)，在表达式的console中输入:
@@ -63,7 +63,7 @@ count(prometheus_target_interval_length_seconds)
 
 有关更多的表达式语言，请见[表达式语言文档](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 
-##### 五、使用graph interface
+### 使用graph interface
 见图表表达式，导航到`http://localhost:9090/graph`， 然后使用"Graph" tab
 
 例如，输入以下表达式来绘制在自我抓取的Prometheus中创建的每秒块速率：
@@ -72,7 +72,7 @@ rate(prometheus_tsdb_head_chunks_created_total[1m])
 ```
 试验graph范围参数和其他设置。
 
-##### 六、启动其他一些采样目标
+### 启动其他一些采样目标
 让我们让这个更有趣，并开始一些示例目标，让Prometheus抓取。
 
 Go客户端库包含一个示例，该示例为具有不同延迟分布的三个服务导出虚构的RPC延迟。
@@ -93,7 +93,7 @@ go build
 ```
 现在你在浏览器输入:`http://localhost:8080/metrics`, `http://localhost:8081/metrics`, `http://localhost:8082/metrics`, 能看到所有采集到的采样点数据。
 
-##### 七、配置Prometheus去监控这三个目标服务
+### 配置Prometheus去监控这三个目标服务
 现在我们将会配置Prometheus，拉取三个目标服务的采样点。我们把这三个目标服务组成一个job, 叫`example-radom`。 然而，想象成，前两个服务是生产环境服务，后者是测试环境服务。我们可以通过group标签分组，要在Prometheus中对此进行建模，我们可以将多组端点添加到单个作业中，为每组目标添加额外的标签。在此示例中，我们将`group ="production"`标签添加到第一组目标，同时将`group ="canary"`添加到第二组。
 
 要实现此目的，请将以下作业定义添加到prometheus.yml中的scrape_configs部分，然后重新启动Prometheus实例：
@@ -115,7 +115,7 @@ scrape_configs:
 
 转到表达式浏览器并验证Prometheus现在是否有关于这些示例端点公开的时间序列的信息，例如`rpc_durations_seconds`指标。
 
-##### 八、为抓取的数据聚合配置规则
+### 为抓取的数据聚合配置规则
 虽然在我们的示例中不是问题，但是在计算ad-hoc时，聚合了数千个时间序列的查询会变慢。 为了提高效率，Prometheus允许您通过配置的录制规则将表达式预先记录到全新的持久时间序列中。 假设我们感兴趣的是记录在5分钟窗口内测量的所有实例（但保留作业和服务维度）的平均示例RPC（`rpc_durations_seconds_count`）的每秒速率。 我们可以这样写：
 ```shell
 avg(rate(rpc_durations_seconds_count[5m])) by (job, service)
