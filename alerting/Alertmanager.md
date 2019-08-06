@@ -27,6 +27,6 @@ Alertmanager处理客户端应用程序（如Prometheus服务器）发送的警�
 Alertmanager对其客户的行为有[特殊要求](https://prometheus.io/docs/alerting/clients/)。 这些仅适用于不使用Prometheus发送警报的高级用例。
 
 ##### 五、高可用
-Alertmanager支持配置以创建用于高可用性的集群。 这可以使用--[cluster-*](https://github.com/prometheus/alertmanager#high-availability)标志进行配置。
+Alertmanager支持配置以创建用于高可用性的集群。 这可以使用--[-*cluster-*](https://github.com/prometheus/alertmanager#high-availability)标志进行配置。
 
 重要的是不要在Prometheus和它的Alertmanagers之间加载平衡流量，而是将Prometheus指向所有Alertmanagers的列表。

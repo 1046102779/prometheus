@@ -44,11 +44,11 @@ absent(sum(nonexistent{job="myjob"}))
 ```
 delta(cpu_temp_celsius{host="zeus"}[2h])
 ```
-`delta`应仅用于仪表。
+`delta`应仅用于`gauges`。
 
 ###### 十一、deriv()
 `deriv(v range-vector)`函数，计算一个范围向量v中各个时间序列二阶导数，使用[简单线性回归](https://en.wikipedia.org/wiki/Simple_linear_regression)
-`deriv`应仅用于仪表。
+`deriv`应仅用于`gauges`。
 
 ###### 十二、exp()
 `exp(v instant-vector)`计算`v`中所有元素的指数函数。特殊情况是：
@@ -59,7 +59,7 @@ delta(cpu_temp_celsius{host="zeus"}[2h])
 `floor(v instant-vector)`将`v`中所有元素的样本值舍入为最接近的整数。。
 
 ###### 十四、histogram_quantile()
-`histogram_quatile(φ float, b instant-vector)` 计算`b`向量的φ-直方图 (0 ≤ φ ≤ 1) 。（有关φ-分位数的详细解释和直方图度量类型的使用，请参见[直方图和摘要](https://prometheus.io/docs/practices/histograms/)。）`b`中的样本是每个桶中的观察计数。 每个样本必须具有标签`le`，其中标签值表示桶的包含上限。 （没有这种标签的样本会被忽略。）直方图度量标准类型自动提供带有`_bucket`后缀和相应标签的时间序列。
+`histogram_quatile(φ float, b instant-vector)` 计算`b`向量的φ-直方图 (0 ≤ φ ≤ 1) 。（有关φ-分位数的详细解释和直方图度量类型的使用，请参见[histograms和summaries](https://prometheus.io/docs/practices/histograms/)。）`b`中的样本是每个桶中的观察计数。 每个样本必须具有标签`le`，其中标签值表示桶的包含上限。 （没有这种标签的样本会被忽略。）`histograms`度量标准类型自动提供带有`_bucket`后缀和相应标签的时间序列。
 
 使用`rate()`函数指定分位数计算的时间窗口。
 
@@ -67,7 +67,7 @@ delta(cpu_temp_celsius{host="zeus"}[2h])
 ```
 histogram_quantile(0.9, rate(http_request_duration_seconds_bucket[10m]))
 ```
-在`http_request_duration_seconds`中为每个标签组合计算分位数。 要聚合，请在`rate()`函数周围使用`sum()`聚合器。 由于`histogram_quantile()`需要`le`标签，因此必须将其包含在`by`子句中。 以下表达式按作业聚合第90个百分点：
+在`http_request_duration_seconds`中为每个标签组合计算分位数。 要聚合，请在`rate()`函数周围使用`sum()`聚合器。 由于`histogram_quantile()`需要`le`标签，因此必须将其包含在`by`子句中。 以下表达式按`job`聚合第90个百分点：
 ```
 histogram_quantile(0.9, sum(rate(http_request_duration_seconds_bucket[10m])) by (job, le))
 ```
@@ -92,7 +92,7 @@ histogram_quantile(0.9, sum(rate(http_request_duration_seconds_bucket[10m])) by 
 `idelta`只能用于仪表。
 
 ###### 十八、increase()
-`increase(v range-vector)`计算范围向量中时间序列的增加。 单调性中断（例如由于目标重启而导致的计数器重置）会自动调整。 增加外推以覆盖范围向量选择器中指定的全时间范围，因此即使计数器仅以整数增量增加，也可以获得非整数结果。
+`increase(v range-vector)`计算范围向量中时间序列的增加。 单调性中断（例如由于目标重启而导致的`counter`重置）会自动调整。 增加外推以覆盖范围向量选择器中指定的全时间范围，因此即使`counter`仅以整数增量增加，也可以获得非整数结果。
 
 以下示例表达式返回范围向量中每个时间系列在过去5分钟内测量的HTTP请求数：
 > increase(http_requests_total{job="api-server"}[5m])
@@ -100,7 +100,7 @@ histogram_quantile(0.9, sum(rate(http_request_duration_seconds_bucket[10m])) by 
 `increase`只应与`counters`一起使用。 它是`rate(v)`的语法糖乘以指定时间范围窗口下的秒数，应该主要用于人类可读性。 在记录规则中使用`rate`，以便每秒一致地跟踪增量。
 
 ###### 十九、irate
-`irate(v range-vector)`计算范围向量中时间序列的每秒即时增长率。 这基于最后两个数据点。 单调性中断（例如由于目标重启而导致的计数器重置）会自动调整。
+`irate(v range-vector)`计算范围向量中时间序列的每秒即时增长率。 这基于最后两个数据点。 单调性中断（例如由于目标重启而导致的`counter`重置）会自动调整。
 
 以下示例表达式返回范围向量中每个时间序列的两个最新数据点的最多5分钟的HTTP请求的每秒速率：
 > irate(http_requests_total{job="api-server"}[5m])

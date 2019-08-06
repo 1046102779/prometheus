@@ -37,7 +37,7 @@ Prometheus没有硬编码的任何单位。 为了更好的兼容性，应使用
 
 |Family|基本单位 | 备注|
 |---|---|---|
-|Time | seconds |  | 
+| Time | seconds |  | 
 | Temperature | celsius | 摄氏度是实践中遇到的最常见的摄氏度 | 
 | Length | meters | |
 | Bytes | bytes | |
@@ -46,4 +46,4 @@ Prometheus没有硬编码的任何单位。 为了更好的兼容性，应使用
 | Voltage | volts | |
 | Electric current | amperes | |
 | Energy | joules | | 
-| Weight | grams | | 
+| Mass | grams | 为了避免千字节前缀的问题，克优于千克。 | 

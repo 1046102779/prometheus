@@ -1,12 +1,12 @@
 欢迎来到Prometheus！Prometheus是一个监控平台，通过在监控目标上的HTTP端点来收集受监控目标的指标。本指南将向您展示如何使用Prometheus安装，配置和监控我们的第一个资源。 您将下载，安装并运行Prometheus。您还将下载并安装exporter，这些工具可在主机和服务上公开时间序列数据。我们的第一个exporter将是Prometheus本身，它提供了有关内存使用，垃圾收集等的各种主机级指标。
 
 ##### 一、下载Prometheus
-根据你的平台[https://prometheus.io/download/](https://note.youdao.com/)，然后解压它:
+根据你的平台[https://prometheus.io/download/]，然后解压它:
 ```
 tar xvfz prometheus-*.tar.gz
 cd prometheus-*
 ```
-Prometheus服务器是一个名为prometheus的二进制文件（或Microsoft Windows上的prometheus.exe）。 我们可以通过传递`--help`标志来运行二进制文件并查看其选项的帮助。
+Prometheus服务器是一个名为prometheus的二进制文件（或Microsoft Windows上的`prometheus.exe`）。 我们可以通过传递`--help`标志来运行二进制文件并查看其选项的帮助。
 ```
 ./prometheus --help
 usage: prometheus [<flags>]
@@ -17,9 +17,9 @@ The Prometheus monitoring server
 在使用欢迎来到Prometheus之前，让我们配置它。
 
 ##### 二、配置Prometheus
-Prometheus配置是YAML。Prometheus下载附带一个名为prometheus.yml的文件中的示例配置，这是一个很好的入门之处。
+Prometheus配置是YAML。Prometheus下载附带一个名为`prometheus.yml`的文件中的示例配置，这是一个很好的入门之处。
 
-我们删除了示例文件中的大部分注释，使其更简洁（注释是以＃为前缀的行）。
+我们删除了示例文件中的大部分注释，使其更简洁（注释是以`＃`为前缀的行）。
 ```
 global:
   scrape_interval:     15s
@@ -34,13 +34,13 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 ```
-示例配置文件中有三个配置块：global，rule_files和scrape_configs。
+示例配置文件中有三个配置块：`global`，`rule_files`和`scrape_configs`。
 
-全局块控制Prometheus服务器的全局配置。 我们有两种选择。 第一个是scrape_interval，它控制Prometheus抓取目标的频率。 您可以为单个目标重写此值。 在这种例子下，全局设置是每15s抓取一次。 evaluation_interval选项控制Prometheus评估规则的频率。 Prometheus使用规则创建新的时间序列并生成警报。
+`global`控制Prometheus服务器的全局配置。 我们有两种选择。 第一个是`scrape_interval`，它控制Prometheus抓取目标的频率。 您可以为单个目标重写此值。 在这种例子下，全局设置是每15s抓取一次。 `evaluation_interval`选项控制Prometheus评估规则的频率。 Prometheus使用规则创建新的时间序列并生成警报。
 
-rule_files块指定我们希望Prometheus服务器加载的任何规则的位置。 现在我们没有规则。
+`rule_files`块指定我们希望Prometheus服务器加载的任何规则的位置。 现在我们没有规则。
 
-最后一个块scrape_configs控制Prometheus监视的资源。 由于Prometheus还将自己的数据公开为HTTP端点，因此它可以抓取并监控自身的健康状况。 在默认配置中，有一个名为prometheus的作业，它会抓取Prometheus服务器公开的时间序列数据。 该作业包含一个静态配置的目标，即端口9090上的localhost。Prometheus希望指标在/metrics路径上的目标上可用。 所以这个默认的工作是通过URL抓取：[http//localhost:9090/metrics](http//localhost:9090/metrics)。
+最后一个块`scrape_configs`控制Prometheus监视的资源。 由于Prometheus还将自己的数据公开为HTTP端点，因此它可以抓取并监控自身的健康状况。 在默认配置中，有一个名为prometheus的`job`，它会抓取Prometheus服务器公开的时间序列数据。 该`job`包含一个静态配置的目标，即端口`9090`上的`localhost`。Prometheus希望指标在/metrics路径上的目标上可用。 所以这个默认的工作是通过URL抓取：[http//localhost:9090/metrics](http//localhost:9090/metrics)。
 
 返回的时间序列数据将详细说明Prometheus服务器的状态和性能。
 
@@ -58,13 +58,13 @@ prometheus应该启动。您还应该能够在[http//localhost:9090](http//local
 ##### 四、使用表达式浏览器
 让我们试着看一下Prometheus收集的关于自己的一些数据。 要使用Prometheus的内置表达式浏览器，请导航到[http//localhost:9090/graph](http//localhost:9090/graph)并在“Graph”选项卡中选择“Console”视图。
 
-正如您可以从[http//localhost：9090/metrics](http//localhost：9090/metrics)收集的那样，Prometheus导出的一个度量标准称为`promhttp_metric_handler_requests_total`（Prometheus服务器已服务的/ metrics请求的总数）。 继续并将其输入表达式控制台：
+正如您可以从[http//localhost：9090/metrics](http//localhost：9090/metrics)收集的那样，Prometheus导出的一个度量标准称为`promhttp_metric_handler_requests_total`（Prometheus服务器已服务的`/metrics`请求的总数）。 继续并将其输入表达式控制台：
 ```
 promhttp_metric_handler_requests_total
 ```
 这应该返回许多不同的时间序列（以及为每个记录的最新值），所有时间序列都使用度量标准名称`promhttp_metric_handler_requests_total`，但具有不同的标签。 这些标签指定不同的请求状态。
 
-如果我们只对导致HTTP代码200的请求感兴趣，我们可以使用此查询来检索该信息：
+如果我们只对导致HTTP代码`200`的请求感兴趣，我们可以使用此查询来检索该信息：
 ```
 promhttp_metric_handler_requests_total{code="200"}
 ```
@@ -77,7 +77,7 @@ count(promhttp_metric_handler_requests_total)
 ##### 五、适用图表接口
 要绘制表达式图表，请导航到[http//localhost:9090/graph](http//localhost:9090/mgraph) graph并使用“图表”选项卡。
 
-例如，输入以下表达式来绘制在自我抓取的Prometheus中发生的返回状态代码200的每秒HTTP请求率：
+例如，输入以下表达式来绘制在自我抓取的Prometheus中发生的返回状态代码`200`的每秒HTTP请求率：
 ```
 rate(promhttp_metric_handler_requests_total{code="200"}[1m])
 ```

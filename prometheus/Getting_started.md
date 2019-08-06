@@ -1,7 +1,7 @@
-本教程是类似"hello,world"的教程，展示怎样在一个简单地例子中安装、配置和使用Prometheus。你将下载和本地化运行Prometheus服务，并写一个配置文件，监控Prometheus服务本身和一个简单的应用，然后配合使用query、rules和graphs展示收集的时间序列数据。
+本教程是类似"hello,world"的教程，展示怎样在一个简单地例子中安装、配置和使用Prometheus。你将下载和本地化运行Prometheus服务，并写一个配置文件，监控Prometheus服务本身和一个简单的应用，然后配合使用`query`、`rules`和`graphs`展示收集的时间序列数据。
 
 ### 下载和运行Prometheus
-[下载Prometheus最新的发布版本](https://prometheus.io/download),然后提取和运行它：
+[下载Prometheus最新的发布版本](https://prometheus.io/download)，然后提取和运行它：
 ```shell
 tar zxvf prometheus-*.tar.gz
 cd prometheus-*
@@ -9,7 +9,7 @@ cd prometheus-*
 在开始启动Prometheus之前，我们要配置它
 
 ### 配置Prometheus监控自身
-Prometheus从监控的目标上通过http方式拉取指标数据,它也可以拉取自身服务数据并监控自身的健康状况。
+Prometheus从监控的目标上通过http方式拉取指标数据，它也可以拉取自身服务数据并监控自身的健康状况。
 
 当然Prometheus服务拉取自身服务数据，并没有多大的用处，但是它是一个好的开始例子。保存下面的基本Prometheus配置，并命名为：`prometheus.yml`:
 ```
@@ -70,14 +70,14 @@ count(prometheus_target_interval_length_seconds)
 ```shell
 rate(prometheus_tsdb_head_chunks_created_total[1m])
 ```
-试验graph范围参数和其他设置。
+试验`graph`范围参数和其他设置。
 
 ### 启动其他一些采样目标
 让我们让这个更有趣，并开始一些示例目标，让Prometheus抓取。
 
-Go客户端库包含一个示例，该示例为具有不同延迟分布的三个服务导出虚构的RPC延迟。
+`Go`客户端库包含一个示例，该示例为具有不同延迟分布的三个服务导出虚构的RPC延迟。
 
-确保已安装Go编译器并设置了正常工作的Go构建环境（具有正确的GOPATH）。
+确保已安装`Go`编译器并设置了正常工作的`Go`构建环境（具有正确的GOPATH）。
 
 下载Prometheus的Go客户端，运行三个服务:
 ```shell
@@ -94,9 +94,9 @@ go build
 现在你在浏览器输入:`http://localhost:8080/metrics`, `http://localhost:8081/metrics`, `http://localhost:8082/metrics`, 能看到所有采集到的采样点数据。
 
 ### 配置Prometheus去监控这三个目标服务
-现在我们将会配置Prometheus，拉取三个目标服务的采样点。我们把这三个目标服务组成一个job, 叫`example-radom`。 然而，想象成，前两个服务是生产环境服务，后者是测试环境服务。我们可以通过group标签分组，要在Prometheus中对此进行建模，我们可以将多组端点添加到单个作业中，为每组目标添加额外的标签。在此示例中，我们将`group ="production"`标签添加到第一组目标，同时将`group ="canary"`添加到第二组。
+现在我们将会配置Prometheus，拉取三个目标服务的采样点。我们把这三个目标服务组成一个`job`, 叫`example-radom`。 然而，想象成，前两个服务是生产环境服务，后者是测试环境服务。我们可以通过`group`标签分组，要在Prometheus中对此进行建模，我们可以将多组端点添加到单个作业中，为每组目标添加额外的标签。在此示例中，我们将`group ="production"`标签添加到第一组目标，同时将`group ="canary"`添加到第二组。
 
-要实现此目的，请将以下作业定义添加到prometheus.yml中的scrape_configs部分，然后重新启动Prometheus实例：
+要实现此目的，请将以下作业定义添加到`prometheus.yml`中的`scrape_configs`部分，然后重新启动Prometheus实例：
 ```shell
 scrape_configs:
   - job_name:       'example-random'
@@ -116,7 +116,7 @@ scrape_configs:
 转到表达式浏览器并验证Prometheus现在是否有关于这些示例端点公开的时间序列的信息，例如`rpc_durations_seconds`指标。
 
 ### 为抓取的数据聚合配置规则
-虽然在我们的示例中不是问题，但是在计算ad-hoc时，聚合了数千个时间序列的查询会变慢。 为了提高效率，Prometheus允许您通过配置的录制规则将表达式预先记录到全新的持久时间序列中。 假设我们感兴趣的是记录在5分钟窗口内测量的所有实例（但保留作业和服务维度）的平均示例RPC（`rpc_durations_seconds_count`）的每秒速率。 我们可以这样写：
+虽然在我们的示例中不是问题，但是在计算`ad-hoc`时，聚合了数千个时间序列的查询会变慢。 为了提高效率，Prometheus允许您通过配置的录制规则将表达式预先记录到全新的持久时间序列中。 假设我们感兴趣的是记录在5分钟窗口内测量的所有实例（但保留作业和服务维度）的平均示例RPC（`rpc_durations_seconds_count`）的每秒速率。 我们可以这样写：
 ```shell
 avg(rate(rpc_durations_seconds_count[5m])) by (job, service)
 ```

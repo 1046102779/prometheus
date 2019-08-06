@@ -41,10 +41,10 @@ Graphite与Prometheus的范围差异，同样适用于InfluxDB本身。此外Inf
 Kapacitor的作用范围相当于，Prometheus的记录规则、告警规则和警告通知功能的结合。Prometheus提供了一个更加丰富地用于图表化和警告的查询语言，Prometheus告警器还提供了分组、重复数据删除和静默功能(silencing functionality)。
 
 ###### 2.2 数据模型/存储
-和Prometheus一样，InfluxDB数据模型采用的标签也是键值对形式，被称为tags。而且InfluxDB有第二级标签，被称为fields，它被更多地限制使用。InfluxDB支持高达纳秒级的时间戳，以及float64、int64、bool和string的数据类型。相反地，Prometheus仅仅支持float64的数据类型，strings和毫秒只能小范围地支持。
+和Prometheus一样，InfluxDB数据模型采用的标签也是键值对形式，被称为`tags`。而且InfluxDB有第二级标签，被称为`fields`，它被更多地限制使用。InfluxDB支持高达纳秒级的时间戳，以及`float64`、`int64`、`bool`和`string`的数据类型。相反地，Prometheus仅仅支持`float64`的数据类型，`strings`和`millisecond `只能小范围地支持。
 
 InfluxDB使用变种的日志结构合并树结构来存储预写日志，并按时间分片。这比Prometheus的文件追加更适合事件记录
-[Logs and Metrics and Graphs, Oh My](https://blog.raintank.io/logs-and-metrics-and-graphs-oh-my)描述了事件日志和度量指标记录的不同
+[Logs and Metrics and Graphs, Oh My!](https://blog.raintank.io/logs-and-metrics-and-graphs-oh-my)描述了事件日志和度量指标记录的不同
 
 ###### 2.3 框架
 Prometheus服务器彼此独立运行，其核心功能仅依赖于本地存储：抓取、规则处理和警报。influxDB的开源版本类似。
@@ -78,7 +78,7 @@ InfluxDB是有一家商业公司按照开放核心模式运营，提供高级功
 和Graphite vs. Prometheus的范围一样
 
 ###### 3.2 数据模型
-OpenTSDB的数据模型几乎和Prometheus一样：时间序列由任意的tags键值对集合表示。所有的度量指标存放在一起，并限制度量指标的总数量大小。Prometheus和OpenTSDB有一些细微的差别，例如：Prometheus允许任意的标签字符，而OpenTSDB的tags命名有一定的限制.OpenTSDB缺乏灵活的查询语言支持，通过它提供的API只能简单地进行聚合和数学计算。
+OpenTSDB的数据模型几乎和Prometheus一样：时间序列由任意的`tags`键值对集合表示。所有的度量指标存放在一起，并限制度量指标的总数量大小。Prometheus和OpenTSDB有一些细微的差别，例如：Prometheus允许任意的标签字符，而OpenTSDB的tags命名有一定的限制.OpenTSDB缺乏灵活的查询语言支持，通过它提供的API只能简单地进行聚合和数学计算。
 
 ###### 3.3 存储
 OpenTSDB的存储由Hadoop和HBase实现的。这意味着水平扩展OpenTSDB是非常容易的，但是你必须接受集群的总体复杂性

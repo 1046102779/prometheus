@@ -1,4 +1,4 @@
-就Prometheus而言，pull拉取采样点的端点服务称之为**instance**，通常对应一个过程（实例）。具有相同目的的**instance**，例如，为可伸缩性或可靠性而复制的流程称为作业。, 则构成了一个**job**
+就Prometheus而言，`pull`拉取采样点的端点服务称之为**instance**，通常对应一个过程（实例）。具有相同目的的**instance**，例如，为可伸缩性或可靠性而复制的流程称为`job`。, 则构成了一个**job**
 
 例如, 一个被称作**api-server**的任务有四个相同的实例。
  - job: `api-server`

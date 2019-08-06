@@ -8,5 +8,5 @@
 
 - 要在Python中使用，请参阅导出到[Pushgateway](https://github.com/prometheus/client_python#exporting-to-a-pushgateway)。
 
-- 要从Ruby使用，请参阅[Pushgateway文档](https://github.com/prometheus/client_ruby#pushgateway)。``
+- 要从Ruby使用，请参阅[Pushgateway文档](https://github.com/prometheus/client_ruby#pushgateway)。
 

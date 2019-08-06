@@ -1,22 +1,24 @@
 ##### 一、什么是prometheus？
 [Prometheus](https://github.com/prometheus)是一个最初在SoundCloud上构建的开源系统监视和警报工具包。自2012年成立以来，许多公司和组织都采用了Prometheus，该项目拥有非常活跃的开发者和用户社区。 它现在是一个独立的开源项目，可以独立于任何公司进行维护。 为了强调这一点，并阐明项目的治理结构，Prometheus于2016年加入Cloud Native Computing Foundation，作为继Kubernetes之后的第二个托管项目。
 
+有关Prometheus的更详细概述，请参阅[媒体](https://prometheus.io/docs/introduction/media/)部分链接的资源。
+
 ###### 1.1 特征
 Prometheus的主要特征有：
 - 多维度数据模型-由指标键值对标识的时间序列数据组成
 - PromQL，一种灵活的查询语言
 - 不依赖分布式存储; 单个服务器节点是自治的
-- 以HTTP方式，通过pull模型拉取时间序列数据
+- 以HTTP方式，通过`pull`模式拉取时间序列数据
 - 支持通过中间网关推送时间序列数据
 - 通过服务发现或者静态配置，来发现目标服务对象
 - 支持多种多样的图表和界面展示
 
 ###### 1.2 组件
 Prometheus生态包括了很多组件，它们中的一些是可选的：
-- Prometheus主服务器，用于抓取和存储时间序列数据
-- 用于检测应用程序代码的客户端库
-- 用于支持短声明周期的push网关
-- 针对HAProxy，StatsD，Graphite等服务的特定exporters 
+- Prometheus server，用于抓取和存储时间序列数据
+- 用于检测应用程序代码的`client libraries`
+- 用于支持短声明周期的`push`网关
+- 针对`HAProxy`，`StatsD`，`Graphite`等服务的特定`exporters` 
 - 警告管理器
 - 各种支持工具
 
