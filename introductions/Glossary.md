@@ -14,7 +14,7 @@
 收集器是表示一组度量指标导出器的一部分。它可以是单个度量指标，也可以是从另一个系统提取的多维度度量指标。
 
 ##### 六、(Direct instrumentation)直接测量
-直接测量是将测量在线添加到程序的代码中
+直接检测是使用[客户端库](https://prometheus.io/docs/introduction/glossary/#client-library)内联作为程序源代码的一部分内联添加的检测。
 
 ##### 七、(Endpoint)端点
 可以抓取的度量标准源，通常对应于单个进程。
@@ -41,7 +41,7 @@ Prometheus经常称作Prometheus系统的核心二进制文件。它也可以作
 [PromQL](https://prometheus.io/docs/querying/basics/)是Prometheus查询语言。它支持聚合、分片、切割、预测和连接操作
 
 ##### 十五、Pushgateway
-Pushgateway会保留最近从批处理作业中推送的度量指标。这允许服务中断后Prometheus能够抓取它们的度量指标数据
+[Pushgateway](https://prometheus.io/docs/instrumenting/pushing/)会保留最近从批处理作业中推送的度量指标。这允许服务中断后Prometheus能够抓取它们的度量指标数据
 
 ##### 十六、(Remote read)远程读取
 远程读取是Prometheus功能，允许从其他系统（例如长期存储）透明读取时间序列作为查询的一部分。
