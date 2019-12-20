@@ -1,7 +1,7 @@
-Prometheus客户端库提供了四个核心的`metrics`类型。这四种类型目前仅在客户端库和`wire`协议中区分。Prometheus服务还没有充分利用这些类型。不久的将来就会发生改变。
+Prometheus客户端库提供了四个核心的`metrics`类型。这四种类型目前仅在客户端库(启用针对特定类型使用量身定制的API)和`wire`协议中区分。Prometheus服务还没有充分利用这些类型。不久的将来就会发生改变。
 
 ##### 一、Counter
-*counter* 是表示单个单调递增计数器的累积度量，其值只能在重启时增加或重置为零。 例如，您可以使用`counter`来表示所服务的请求数，已完成的任务或错误。
+*counter* 是表示单个[单调递增计数器](https://en.wikipedia.org/wiki/Monotonic_function)的累积度量，其值只能在重启时增加或重置为零。 例如，您可以使用`counter`来表示所服务的请求数，已完成的任务或错误。
 
 不要使用`counter`来暴露可能减少的值。例如，不要使用`counter`来处理当前正在运行的进程数; 而是使用`gauge`。
 

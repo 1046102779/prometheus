@@ -1,6 +1,6 @@
 就Prometheus而言，`pull`拉取采样点的端点服务称之为**instance**，通常对应一个过程（实例）。具有相同目的的**instance**，例如，为可伸缩性或可靠性而复制的流程称为`job`。, 则构成了一个**job**
 
-例如, 一个被称作**api-server**的任务有四个相同的实例。
+例如, 一个被称作**api-server**的`job`有四个相同的`instance`。
  - job: `api-server`
      - instance 1：`1.2.3.4:5670`
      - instance 2：`1.2.3.4:5671`
@@ -19,5 +19,6 @@
  - `scrape_duration_seconds{job="[job-name]", instance="[instance-id]"}`: 抓取的持续时间
  - `scrape_samples_post_metric_relabeling{job="<job-name>", instance="<instance-id>"}`: 应用度量标准重新标记后剩余的样本数。
  - `scrape_samples_scraped{job="<job-name>", instance="<instance-id>"}`: 目标暴露的样本数量。
+ - `scrape_series_added{job="<job-name>", instance="<instance-id>"}`: 此`scrape`中新系列的大概数量。 v2.10的新功能
 
 `up`度量指标对服务健康的监控是非常有用的。
