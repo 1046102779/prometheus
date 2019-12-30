@@ -1,4 +1,4 @@
-联合允许Prometheus服务器从另一个Prometheus服务器中截取选定的时间序列。
+联邦允许Prometheus服务器从另一个Prometheus服务器中截取选定的时间序列。
 ##### 一、用例
 联邦有不同的用例。 通常，它用于实现可扩展的Prometheus监控设置或将相关指标从一个服务的Prometheus拉到另一个服务。
 ###### 1.1 分层联合

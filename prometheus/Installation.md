@@ -42,8 +42,7 @@ docker run -p 9090:9090 my-prometheus
 如果你喜欢使用配置管理系统，你可能对下面地第三方库感兴趣：
 
 Ansible：
- - [griggheo/ansible-prometheus](https://github.com/griggheo/ansible-prometheus)
- - [William-Yeh/ansible-prometheus](https://github.com/William-Yeh/ansible-prometheus)
+ - [Cloud Alchemy/ansible-prometheus](https://github.com/cloudalchemy/ansible-prometheus)
 
 Chef:
  - [rayrod2030/chef-prometheus](https://github.com/rayrod2030/chef-prometheus)

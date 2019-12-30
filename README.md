@@ -34,6 +34,7 @@ Prometheus是一个开源系统监控和警报系统。
         * [HttpAPI](prometheus/querying/HTTP_API.md)
     - [存储](prometheus/Storage.md)
     - [联邦](prometheus/Federation.md)
+    - [管理API](prometheus/Management_API.md)
     - [集成](prometheus/Migration.md)
     - [API稳定性](prometheus/API_Stability.md)
 * [可视化](visualization/README.md)

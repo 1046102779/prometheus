@@ -9,9 +9,9 @@ cd prometheus-*
 在开始启动Prometheus之前，我们要配置它
 
 ### 配置Prometheus监控自身
-Prometheus从监控的目标上通过http方式拉取指标数据，它也可以拉取自身服务数据并监控自身的健康状况。
+Prometheus从监控的目标上通过http方式收集指标数据，由于Prometheus还以相同的方式公开有关其自身的数据，因此它也可以抓取并监视其自身的健康状况。。
 
-当然Prometheus服务拉取自身服务数据，并没有多大的用处，但是它是一个好的开始例子。保存下面的基本Prometheus配置，并命名为：`prometheus.yml`:
+当然Prometheus服务收集自身服务数据，并没有多大的用处，但是它是一个好的开始例子。保存下面的基本Prometheus配置，并命名为：`prometheus.yml`:
 ```
 global:
   scrape_interval:     15s # 默认情况下，每15s拉取一次目标采样点数据。
