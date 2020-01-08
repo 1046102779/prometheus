@@ -1,9 +1,9 @@
 
-[语言模板](http://golang.org/pkg/text/template/)创建任意的console。这些由Prometheus服务提供。
+[Golang模板](http://golang.org/pkg/text/template/)创建任意的console。这些由Prometheus服务提供。
 
 控制台模板是创建可在源代码管理中轻松管理的模板的最强大方法。 虽然有一个学习曲线，所以对这种监控方式不熟悉的用户应首先尝试Grafana。
 
-##### 一、Getting started
+##### 一、开始
 Prometheus附带一套示例，让您学习。 这些可以在运行的Prometheus上的`/consoles/index.html.example`中找到，如果Prometheus正在使用`job="node"`标签来抓取节点导出器，则会显示节点导出器控制台。
 
 这个例子控制台包括5部分：
@@ -21,7 +21,7 @@ Prometheus附带一套示例，让您学习。 这些可以在运行的Prometheu
 
 最后，右侧的表格可用于以比图形更紧凑的形式显示统计数据。
 
-##### 二、例子控制台
+##### 二、控制台例子
 这是一个基本的控制台。 它显示了右侧表中的任务数，其中有多少，平均CPU使用率和平均内存使用量。 主要内容具有每秒查询图。
 ```template
 {{template "head" .}}
