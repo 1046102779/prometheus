@@ -99,24 +99,25 @@ new PromConsole.Graph({
 `head`模板加载所需的Javascript和CSS。
 
 图库的参数：
-名字|	描述
----|---
-expr|	必选. 表达式到图表。 可以是一个清单。
-node|	必选. 要渲染的DOM节点。
-duration|	可选. 图表的持续时间。 默认为1小时。
-endTime	|可选. 图表结束时的Unixtime。 默认为现在。
-width	|可选. 图表的宽度，不包括标题。 默认为自动检测。
-height	|可选. 图表的高度，不包括标题和图例。 默认为200像素。
-min	| 可选. 最小x轴值。 默认为最低数据值。
-max	 | 可选. 最小y轴值。 默认为最高数据值。
-renderer|	可选. 图表类型。 选项`line`和`area`（堆叠图）。 默认为行。
-name	| 可选. 图例和悬停细节中的图表标题。 如果传递了一个字符串，`[[label]]`将被替换为标签值。 如果传递了一个函数，它将传递一个标签映射，并应该将该名称作为字符串返回。 可以是一个清单。
-xTitle	| 可选. x轴的标题。 默认为`Time`。
-yUnits	| 可选. y轴的单位。 默认为空。
-yTitle	| 可选. y轴的标题。 默认为空。
-yAxisFormatter	| 可选. y轴的数字格式化程序。 默认为`PromConsole.NumberFormatter.humanize`。
-yHoverFormatter|	可选. 悬停细节的数字格式化程序。 默认为`PromConsole.NumberFormatter.humanizeExact`。
-colorScheme| 	可选. 图表使用的配色方案。 可以是十六进制[颜色代码列表](https://github.com/shutterstock/rickshaw/blob/master/src/js/Rickshaw.Fixtures.Color.js)，也可以是人力车支持的颜色方案名称之一。 默认为`colorwheel`。
+
+| 名字 |	描述 |
+| ---|--- |
+| expr|	必选. 表达式到图表。 可以是一个清单。|
+| node|	必选. 要渲染的DOM节点。 |
+| duration|	可选. 图表的持续时间。 默认为1小时。 |
+| endTime	|可选. 图表结束时的Unixtime。 默认为现在。 |
+| width	|可选. 图表的宽度，不包括标题。 默认为自动检测。|
+| height	|可选. 图表的高度，不包括标题和图例。 默认为200像素。|
+| min	| 可选. 最小x轴值。 默认为最低数据值。|
+| max	 | 可选. 最小y轴值。 默认为最高数据值。 |
+| renderer|	可选. 图表类型。 选项`line`和`area`（堆叠图）。 默认为行。|
+| name	| 可选. 图例和悬停细节中的图表标题。 如果传递了一个字符串，`[[label]]`将被替换为标签值。  如果传递了一个函数，它将传递一个标签映射，并应该将该名称作为字符串返回。 可以是一个清单。 |
+| xTitle	| 可选. x轴的标题。 默认为`Time`。|
+| yUnits	| 可选. y轴的单位。 默认为空。 |
+| yTitle	| 可选. y轴的标题。 默认为空。|
+| yAxisFormatter	| 可选. y轴的数字格式化程序。 默认为`PromConsole.NumberFormatter.humanize`。|
+| yHoverFormatter|	可选. 悬停细节的数字格式化程序。 默认为`PromConsole.NumberFormatter.humanizeExact`。|
+| colorScheme| 	可选. 图表使用的配色方案。 可以是十六进制[颜色代码列表](https://github.com/shutterstock/rickshaw/blob/master/src/js/Rickshaw.Fixtures.Color.js)，也可以是人力车支持的颜色方案名称之一。 默认为`colorwheel`。 |
 
 如果`expr`和`name`都是列表，则它们的长度必须相同。 该名称将应用于相应表达式的图。
 
