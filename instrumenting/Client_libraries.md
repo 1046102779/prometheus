@@ -9,6 +9,7 @@
 
 非正式的第三方客户端库
  - [Bash](https://github.com/aecolley/client_bash)
+ - [C](https://github.com/digitalocean/prometheus-client-c)
  - [C++](https://github.com/jupp0r/prometheus-cpp)
  - [Common Lisp](https://github.com/deadtrickster/prometheus.cl)
  - [Elixir](https://github.com/deadtrickster/prometheus.ex)

@@ -9,16 +9,18 @@
 
 [JMX导出器](https://github.com/prometheus/jmx_exporter)可以从各种基于JVM的应用程序导出，例如[Kafka](http://kafka.apache.org/)和[Cassandra](http://cassandra.apache.org/)。
 
-###### 1.1 数据库Databases
+###### 1.1 数据库
  - [Aerospike exporter](https://github.com/alicebob/asprom)
  - [ClickHouse exporter](https://github.com/f1yegor/clickhouse_exporter)
  - [Consul exporter](https://github.com/prometheus/consul_exporter) **官方**
+ - [Couchbase exporter](https://github.com/blakelead/couchbase_exporter)
  - [CouchDB exporter](https://github.com/gesellix/couchdb-exporter)
  - [ElasticSearch exporter](https://github.com/justwatchcom/elasticsearch_exporter)
  - [EventStore exporter](https://github.com/marcinbudny/eventstore_exporter)
  - [Memcached exporter](https://github.com/prometheus/memcached_exporter) **官方**
  - [MongoDB exporter](https://github.com/dcu/mongodb_exporter)
  - [MSSQL exporter](https://github.com/awaragi/prometheus-mssql-exporter)
+ - [MySQL router exporter](https://github.com/rluisr/mysqlrouter_exporter)
  - [MySQL server exporter](https://github.com/prometheus/mysqld_exporter) **官方**
  - [OpenTSDB exporter](https://github.com/cloudflare/opentsdb_exporter)
  - [Oracle exporter](https://github.com/iamseth/oracledb_exporter)
@@ -29,20 +31,21 @@
  - [RavenDB exporter](https://github.com/marcinbudny/ravendb_exporter)
  - [Redis exporter](https://github.com/oliver006/redis_exporter)
  - [RethinkDB exporter](https://github.com/oliver006/rethinkdb_exporter)
- - [SQL query result set metrics exporter](https://github.com/chop-dbhi/prometheus-sql)
+ - [SQL exporter](https://github.com/free/sql_exporter)
  - [Tarantool metric library](https://github.com/tarantool/prometheus)
- - [Twemproxy metric library](https://github.com/stuartnelson3/twemproxy_exporter)
+ - [Twemproxy](https://github.com/stuartnelson3/twemproxy_exporter)
 
-###### 1.2 硬件相关Hardware related
+###### 1.2 硬件相关
  - [apcupsd exporter](https://github.com/mdlayher/apcupsd_exporter)
  - [BIG-IP exporter](https://github.com/ExpressenAB/bigip_exporter)
  - [Collins exporter](https://github.com/soundcloud/collins_exporter)
+ - [Dell Hardware OMSA exporter](https://github.com/galexrt/dellhw_exporter)
  - [IBM Z HMC exporter](https://github.com/zhmcclient/zhmc-prometheus-exporter)
  - [IoT Edison exporter](https://github.com/lovoo/ipmi_exporter)
  - [IPMI Edison exporter](https://github.com/soundcloud/ipmi_exporter)
  - [knxd exporter](https://github.com/RichiH/knxd_exporter)
  - [Netgear Cable Modem exporter](https://github.com/ickymettle/netgear_cm_exporter)
- - [Netgear Router](https://github.com/DRuggeri/netgear_exporter)
+ - [Netgear Router exporter](https://github.com/DRuggeri/netgear_exporter)
  - [Node/System metrics exporter](https://github.com/prometheus/node_exporter) **官方**
  - [NVIDIA GPU UniFi exporter](https://github.com/mindprince/nvidia_gpu_prometheus_exporter)
  - [ProSAFE UniFi exporter](https://github.com/dalance/prosafe_exporter)
@@ -66,10 +69,11 @@
  - [MQTT blackbox exporter](https://github.com/inovex/mqtt_blackbox_exporter)
  - [RabbitMQ exporter](https://github.com/kbudde/rabbitmq_exporter)
  - [RabbitMQ Management Plugin exporter](https://github.com/deadtrickster/prometheus_rabbitmq_exporter)
+ - [RocketMQ exporter](https://github.com/apache/rocketmq-exporter)
 
-###### 1.5 存储Storage
+###### 1.5 存储
  - [Ceph exporter](https://github.com/digitalocean/ceph_exporter)
- - [Ceph RADOSGW exporter]https://github.com/blemmenes/radosgw_usage_exporter)
+ - [Ceph RADOSGW exporter](https://github.com/blemmenes/radosgw_usage_exporter)
  - [Gluster exporter](https://github.com/ofesseler/gluster_exporter)
  - [Hadoop HDFS FSImage exporter](https://github.com/marcelmay/hadoop-hdfs-fsimage-exporter)
  - [Lustre exporter](https://github.com/HewlettPackard/lustre_exporter)
@@ -100,10 +104,11 @@
  - [OpenWeatherMap exporter](https://github.com/RichiH/openweathermap_exporter)
  - [Pagespeed exporter](https://github.com/foomo/pagespeed_exporter)
  - [Rancher exporter](https://github.com/infinityworksltd/prometheus-rancher-exporter)
- - [Speedtest.net.exporter](https://github.com/RichiH/speedtest_exporter)
+ - [Speedtest exporter](https://github.com/RichiH/speedtest_exporter)
+ - [Tankerkönig API Exporter](https://github.com/lukasmalkmus/tankerkoenig_exporter)
 
 ###### 1.8 Logging
- - [Fluentd data extractor](https://github.com/V3ckt0r/fluentd_exporter)
+ - [Fluentd extractor](https://github.com/V3ckt0r/fluentd_exporter)
  - [Google's mtail log data extractor](https://github.com/google/mtail)
  - [Grok exporter](https://github.com/fstab/grok_exporter)
 
@@ -111,12 +116,14 @@
  - [Akamai Colud monitor exporter](https://github.com/ExpressenAB/cloudmonitor_exporter)
  - [Alibaba Colud monitor exporter](https://github.com/aylei/aliyun-exporter)
  - [AWS CloudWatch exporter](https://github.com/prometheus/cloudwatch_exporter) **官方**
+ - [Azure Monitor exporter](https://github.com/RobustPerception/azure_metrics_exporter)
  - [Cloud Foundry Firehose exporter](https://github.com/cloudfoundry-community/firehose_exporter)
  - [Collectd exporter](https://github.com/prometheus/collectd_exporter)**官方**
  - [Google Stackdriver exporter](https://github.com/frodenas/stackdriver_exporter) 
  - [Graphite exporter](https://github.com/prometheus/graphite_exporter) **官方**
  - [Heka dashboard exporter](https://github.com/docker-infra/heka_exporter)
  - [Heka exporter](https://github.com/imgix/heka_exporter)
+ - [Huawei Cloudeye exporter](https://github.com/huaweicloud/cloudeye-exporter)
  - [InfluxDB exporter](https://github.com/prometheus/influxdb_exporter) **官方**
  - [JavaMelody exporter](https://github.com/fschlag/javamelody-prometheus-exporter)
  - [JMX exporter](https://github.com/prometheus/jmx_exporter) **官方**
@@ -130,11 +137,14 @@
  - [scollector exporter](https://github.com/tgulacsi/prometheus_scollector)
  - [Sensu exporter](https://github.com/reachlin/sensu_exporter)
  - [SNMP exporter](https://github.com/prometheus/snmp_exporter) **官方**
- - [StatsD exporter](https://github.com/prometheus/statsd_exporter)
+ - [StatsD exporter](https://github.com/prometheus/statsd_exporter) **官方**
+ - [TencentCloud monitor exporter](https://github.com/tencentyun/tencentcloud-exporter)
+ - [ThousandEyes exporter](https://github.com/sapcc/1000eyes_exporter)
 
 ###### 1.10 其他杂项
  - [ACT Fibernet exporter](https://git.captnemo.in/nemo/prometheus-act-exporter)
  - [BIND exporter](https://github.com/digitalocean/bind_exporter)
+ - [Bitcoind exporter](https://github.com/LePetitBloc/bitcoind-exporter)
  - [BlackBox exporter](https://github.com/prometheus/blackbox_exporter) **官方**
  - [BOSH exporter](https://github.com/cloudfoundry-community/bosh_exporter)
  - [cAdvisor](https://github.com/google/cadvisor)
@@ -143,18 +153,25 @@
  - [Dovecot exporter](https://github.com/kumina/dovecot_exporter)
  - [eBPF exporter](https://github.com/cloudflare/ebpf_exporter)
  - [Ethereum Client exporter](https://github.com/31z4/ethereum-prometheus-exporter)
+ - [JFrog Artifactory Exporter](https://github.com/peimanja/artifactory_exporter)
  - [Hostapd exporter](https://stash.i2cat.net/users/miguel_catalan/repos/hostapd_prometheus_exporter/browse)
  - [JMeter exporter](https://github.com/johrstrom/jmeter-prometheus-plugin)
  - [Kannel exporter](https://github.com/apostvav/kannel_exporter)
  - [Kemp LoadBalancer exporter](https://github.com/giantswarm/prometheus-kemp-exporter)
  - [Kibana exporter](https://github.com/pjhampton/kibana-prometheus-exporter)
  - [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics)
+ - [Locust Exporter](https://github.com/ContainerSolutions/locust_exporter)
  - [Meteor JS web framework exporter](https://atmospherejs.com/sevki/prometheus-exporter)
- - [OpenStack exporter module](https://github.com/Linaro/openstack-exporter)
+ - [Minecraft exporter module](https://github.com/Baughn/PrometheusIntegration)
+ - [OpenStack exporter](https://github.com/Linaro/openstack-exporter)
+ - [OpenStack blackbox exporter](https://github.com/infraly/openstack_client_exporter)
+ - [oVirt exporter](https://github.com/czerwonk/ovirt_exporter)
+ - [Pact Broker exporter](https://github.com/ContainerSolutions/pactbroker_exporter)
  - [PHP-FPM exporter](https://github.com/bakins/php-fpm-exporter)
  - [PowerDNS exporter](https://github.com/janeczku/powerdns_exporter)
  - [Process exporter](https://github.com/ncabatoff/process-exporter)
  - [rTorrent exporter](https://github.com/mdlayher/rtorrent_exporter)
+ - [SABnzbd exporter](https://github.com/msroest/sabnzbd_exporter)
  - [Script exporter](https://github.com/adhocteam/script_exporter)
  - [Shield exporter](https://github.com/bosh-prometheus/shield_exporter)
  - [Smokeping exporter](https://github.com/SuperQ/smokeping_prober)
@@ -162,6 +179,7 @@
  - [SoftEther exporter](https://github.com/dalance/softether_exporter)
  - [Transmission exporter](https://github.com/metalmatze/transmission-exporter)
  - [Unbound exporter](https://github.com/kumina/unbound_exporter)
+ - [WireGuard exporter](https://github.com/MindFlavor/prometheus_wireguard_exporter)
  - [Xen exporter](https://github.com/lovoo/xenstats_exporter)
 
 在实施新的Prometheus出口商时，请遵循[编写出口商的指南](https://prometheus.io/docs/instrumenting/writing_exporters/)。另请考虑咨询开[发邮件列表](https://groups.google.com/forum/#!forum/prometheus-developers)。 我们很乐意就如何使您的出口商尽可能有用和一致提供建议。
@@ -170,7 +188,9 @@
 某些第三方软件以Prometheus格式公开指标，因此不需要单独的导出器：
  - [App Connect Enterprise](https://github.com/ot4i/ace-docker)
  - [Ballerina](https://ballerina.io/)
+ - [BFE](https://github.com/baidu/bfe)
  - [Ceph](http://docs.ceph.com/docs/master/mgr/prometheus/)
+ - [CockroachDB](https://www.cockroachlabs.com/docs/stable/monitoring-and-alerting.html#prometheus-endpoint)
  - [Collectd](https://collectd.org/wiki/index.php/Plugin:Write_Prometheus)
  - [Concourse](https://concourse-ci.org/)
  - [CRG Roller Derby Scoreboard ](https://github.com/rollerderby/scoreboard)
@@ -183,6 +203,7 @@
  - [FreeBSD Kernel](https://www.freebsd.org/cgi/man.cgi?query=prometheus_sysctl_exporter&apropos=0&sektion=8&manpath=FreeBSD+12-current&arch=default&format=html)
  - [Grafana](https://grafana.com/docs/administration/metrics/)
  - [JavaMelody](https://github.com/javamelody/javamelody/wiki/UserGuideAdvanced#exposing-metrics-to-prometheus)
+ - [Kong](https://github.com/Kong/kong-plugin-prometheus)
  - [Kubernetes](https://github.com/kubernetes/kubernetes)
  - [Linkerd](https://github.com/linkerd/linkerd)
  - [mgmt](https://github.com/purpleidea/mgmt/blob/master/docs/prometheus.md)
@@ -192,6 +213,7 @@
  - [Netdata](https://github.com/netdata/netdata)
  - [Pretix](https://pretix.eu/about/en/)
  - [Quobyte](https://www.quobyte.com/)
+ - [RabbitMQ](https://www.rabbitmq.com/prometheus.html)
  - [RobustIRC](http://robustirc.net/)
  - [ScyllaDB](https://github.com/scylladb/scylla)
  - [Skipper](https://github.com/zalando/skipper)
@@ -200,6 +222,7 @@
  - [Traefik](https://github.com/containous/traefik)
  - [VerneMQ](https://github.com/vernemq/vernemq)
  - [Weave Flux](http://weaveworks.github.io/flux/)
+ - [Xandikos](https://www.xandikos.org/)
  
 直接标记的软件也直接使用Prometheus客户端库进行检测。
 

@@ -1,6 +1,6 @@
 本文档介绍了Prometheus客户端库应提供的功能和API，旨在实现库之间的一致性，简化易用用例，避免提供可能导致用户走错路的功能。
 
-在撰写本文时已经支持了10种语言，因此我们现在已经很好地理解了如何编写客户端。 这些指南旨在帮助新客户端库的作者生成良好的库。
+在撰写本文时已经支持了[10种语言](https://prometheus.io/docs/instrumenting/clientlibs/)，因此我们现在已经很好地理解了如何编写客户端。 这些指南旨在帮助新客户端库的作者生成良好的库。
 
 ##### 一、Conventions约定
 MUST/MUST NOT/SHOULD/SHOULD NOT/MAY具有给出的含义在[https://www.ietf.org/rfc/rfc2119.txt](https://www.ietf.org/rfc/rfc2119.txt)
@@ -35,12 +35,12 @@ MUST/MUST NOT/SHOULD/SHOULD NOT/MAY具有给出的含义在[https://www.ietf.org
 对于诸如C的非OO语言，客户端库应该尽可能地遵循这种结构的精神。
 
 ###### 2.1 命名
-客户端库应该遵循本文档中提到的`function/method/class`，记住它们所使用的语言的命名约定。例如，`set_to_current_time()`适用于方法名称Python，但`SetToCurrentTime()`更好 在Go中，`setToCurrentTime()`是Java中的约定。 如果名称因技术原因而不同（例如，不允许函数重载），文档/帮助字符串应该将用户指向其他名称。
+客户端库应该遵循本文档中提到的`function/method/class`，记住它们所使用的语言的命名约定。例如，`set_to_current_time()`适用于方法名称Python，但在Go中`SetToCurrentTime()`更好，`setToCurrentTime()`是Java中的约定。 如果名称因技术原因而不同（例如，不允许函数重载），文档/帮助字符串应该将用户指向其他名称。
 
 库不得提供与此处给出的名称相同或相似的函数/方法/类，但具有不同的语义。
 
 ##### 三、Metrics
-`Counter`、`Gauge`、`Summary`和`Histogram`度量指标类型是最主要的接口。
+`Counter`、`Gauge`、`Summary`和`Histogram`[度量指标类型](https://prometheus.io/docs/concepts/metric_types/)是最主要的接口。
 
 `Counter`和`Gauge`必须是客户库的一部分。`Summary`和`Histogram`至少被提供一个。
 
@@ -62,7 +62,7 @@ class YourClass {
 这将使用默认的`CollectorRegistry`注册请求。 通过调用`build()`而不是`register()`，度量标准将不会被注册（方便单元测试），您还可以将`CollectorRegistry`传递给`register()`（便于批处理作业）。
 
 ###### 3.1 Counter
-`Counter`[https://prometheus.io/docs/concepts/metric_types/#counter]是一个单调递增的计数器。它不允许counter值下降，但是它可以被重置为0（例如：客户端服务重启）。
+[`Counter`](https://prometheus.io/docs/concepts/metric_types/#counter)是一个单调递增的计数器。它不允许counter值下降，但是它可以被重置为0（例如：客户端服务重启）。
 
 一个counter必须有以下方法：
  - `inc()`: 增量为1.
@@ -75,7 +75,7 @@ class YourClass {
 计数器必须从0开始。
 
 ###### 3.2 Gauge
-[Gauge](https://prometheus.io/docs/concepts/metric_types/#gauge)表示一个可以上下波动的值。
+[`Gauge`](https://prometheus.io/docs/concepts/metric_types/#gauge)表示一个可以上下波动的值。
 
 gauge必须有以下的方法：
  - `inc()`: 每次增加1
@@ -95,7 +95,7 @@ gauge被建议有：
 一种为一段代码计时并将仪表设置为其持续时间的方法，以秒为单位。 这对批处理作业很有用。 这是Java中的`startTimer/setDuration`和Python中的`time()`装饰器/上下文管理器。 这应该与`Summary/Histogram`中的模式匹配（尽管是`set()`而不是`observe()`）。
 
 ###### 3.3 Summary
-[summary](https://prometheus.io/docs/concepts/metric_types/#summary)通过时间滑动窗口抽样观察（通常是要求持续时间），并提供对其分布、频率和总和的即时观察。
+[`Summary`](https://prometheus.io/docs/concepts/metric_types/#summary)通过时间滑动窗口抽样观察（通常是要求持续时间），并提供对其分布、频率和总和的即时观察。
 
 `Summary`绝不允许用户将“quantile”设置为标签名称，因为这在内部用于指定摘要分位数。 一个`Summary`是ENCOURAGED提供分位数作为出口，虽然这些不能汇总，往往很慢。 总结必须允许没有分位数，因为`_count/_sum`非常有用，这必须是默认值。
 
@@ -110,7 +110,7 @@ gauge被建议有：
 `Summary``_count/_sum`必须从0开始。
 
 ###### 3.4 Histogram
-[Histogram](https://prometheus.io/docs/concepts/metric_types/#histogram)允许可聚合的事件分布，例如请求延迟。 这是每个桶的核心。
+[`Histogram`](https://prometheus.io/docs/concepts/metric_types/#histogram)允许可聚合的事件分布，例如请求延迟。 这是每个桶的核心。
 
 `Histogram`绝不允许`le`作为用户设置标签，因为`le`在内部用于指定存储桶。
 
@@ -188,6 +188,7 @@ gauge被建议有：
 | process_open_fds          | 打开的文件描述符数量       | 文件描述符|
 | process_max_fds           | 打开描述符最大值           | 文件描述符|
 | process_virtual_memory_bytes| 虚拟内存大小             | 字节|
+| process_virtual_memory_max_bytes| 最大可用虚拟内存量（以字节为单位）             | 字节|
 | process_resident_memory_bytes| 驻留内存大小|字节|
 | process_heap_bytes | 进程head堆大小| 字节|
 | process_start_time_seconds| unix时间 | 秒|

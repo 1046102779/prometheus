@@ -1,7 +1,7 @@
 可以使用简单的[基于文本](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format)的展示格式向Memetheus公开指标。 有各种各样的客户端库可以为您实现此格式。 如果您的首选语言没有客户端库，则可以[创建自己的语言库](https://prometheus.io/docs/instrumenting/writing_clientlibs/)。
 
 #### 一、基于文本格式
-从Prometheus 2.0版开始，向Prometheus公开指标的所有流程都需要使用基于文本的格式。 在本节中，您可以找到有关此格式的一些基本信息以及格式的更详细分类。
+从Prometheus 2.0版开始，向Prometheus公开指标的所有流程都需要使用基于文本的格式。 在本节中，您可以找到有关此格式的一些[基本信息](https://prometheus.io/docs/instrumenting/exposition_formats/#basic-info)以及格式的更详细分类。
 
 ##### 1.1 基本信息
 | 条目 | 描述 |
@@ -10,8 +10,8 @@
 |支持|Prometheus 版本 `>=0.4.0`
 |传输协议| HTTP |
 | 编码|  utf-8, `\n`行结尾|
-| HTTP Content-Type| `text/plain; version=0.0.4`（缺少版本值将导致回退到最新的文本格式版本。）
-| Optional HTTP Content-Encoding| gzip |
+| HTTP `Content-Type`| `text/plain; version=0.0.4`（缺少版本值将导致回退到最新的文本格式版本。）
+| Optional HTTP `Content-Encoding`| `gzip` |
 | 优点 | -可读性好
 |      | -易于组合，特别适用于简单情况（无需嵌套）
 |      |- 逐行阅读（处理类型提示和文本字符串外）
@@ -24,7 +24,7 @@
 | | - Summary 
 | | - Untyped 
 
-##### 1.2 Text format details 文本格式详解
+##### 1.2 文本格式详解
 
 Prometheus基于文本的格式是面向行的。 行由换行符（`\n`）分隔。 最后一行必须以换行符结尾。 空行被忽略。
 
